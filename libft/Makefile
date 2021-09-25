@@ -16,10 +16,13 @@ SRCS = 	ft_isprint.c		ft_strlen.c		ft_memchr.c\
 		ft_lstnew.c			ft_lstsize.c		ft_lstlast.c\
 		ft_lstadd_back.c	ft_lstdelone.c		ft_lstclear.c\
 		ft_lstadd_front.c	ft_lstiter.c max_min.c
+RM	= rm -f
+OBJS=		$(SRCS:.c=.o)
+FLAGS	=	-Wall -Wextra -Werror
+CC	=	gcc
 
-OBJS =		$(SRCS:.c=.o)
-
-NAME =		libft.a
+%.o: %.c
+	$(CC) $(FLAGS) -c $<
 
 all: $(NAME)
 
@@ -27,11 +30,11 @@ $(NAME): $(OBJS)
 		ar rcs $(NAME) $(OBJS)
 
 clean:
-		$(RM) $(OBJS) $(BON_OBJS)
+		$(RM) $(OBJS)
 
 fclean:  clean
 		$(RM) $(NAME)
 
 re:   fclean $(NAME)
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
