@@ -1,15 +1,17 @@
 #include "minishell.h"
 
-int main()
+int	main()
 {
-    char    *line;
+	t_minish	minish;
 
-    char *cmdline = ft_strjoin(getenv("USER"), "$>");
-    while (1)
-    {
-        line = readline(cmdline);
-        if (!ft_strcmp(line, "exit"))
-            exit(0);
-    }
-    return (0);
+	char *cmdline = ft_strjoin(getenv("USER"), "$>");
+	while (1)
+	{
+		minish.line = readline(cmdline);
+		add_history(minish.line);
+		parser(&minish);
+		if (!ft_strcmp(minish.line, "exit"))
+			exit(0);
+	}
+	return (0);
 }
