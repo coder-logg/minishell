@@ -1,6 +1,0 @@
-#ifndef PARSER_MINISHELL_H
-# define PARSER_MINISHELL_H
-
-
-
-#endif //PARSER_MINISHELL_H
