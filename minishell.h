@@ -23,7 +23,7 @@ typedef struct s_minish t_minish;
 struct s_minish
 {
 	char	*line;
-	char	*cmd;
+	char	*cmd[];
 };
 
 #endif
