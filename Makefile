@@ -1,6 +1,8 @@
 NAME	=	minishell
 PARSER	=	$(addprefix parser/, parser.c)
-SRCS	=	${PARSER} main.c
+SRCS	=	${PARSER} main.c\
+			util/utils.c	builtins/builtins.c\
+			util/errors.c
 OBJS =		$(SRCS:.c=.o)
 FLAGS	=	-Wall -Wextra -Werror
 LIBFTMAKE =	$(MAKE) -C libft/
