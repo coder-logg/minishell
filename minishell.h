@@ -23,7 +23,11 @@ typedef struct s_minish t_minish;
 struct s_minish
 {
 	char	*line;
-	char	*cmd[];
+	char	**cmd;
 };
 
+int		is_all_spaces(char *str);
+void	check(t_minish *minish, char **env);
+void	cmd_not_found(char *cmd);
+void	error_builtin(char *str);
 #endif
