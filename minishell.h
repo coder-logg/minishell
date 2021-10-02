@@ -20,10 +20,19 @@ typedef struct s_minish t_minish;
 # include "libft/libft.h"
 # include "parser/parser.h"
 
+typedef struct s_cmd
+{
+	char	**cmd;
+}			t_cmd;
+
 struct s_minish
 {
 	char	*line;
-	char	*cmd[];
+	char	**cmd;
 };
 
+int		is_all_spaces(char *str);
+void	check(t_minish *minish, char **env);
+void	cmd_not_found(char *cmd);
+void	error_builtin(char *str);
 #endif

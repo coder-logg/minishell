@@ -50,6 +50,8 @@ void replace_env_name_with_val(unsigned int *i, t_parse_quotes *pars_qoutes)
 	new_str_len = pars_qoutes->second_quot - pars_qoutes->first_quot - 1 -
 			ft_strlen(pars_qoutes->env_name) + ft_strlen(pars_qoutes->env_val);
 	new_res = ft_calloc(new_str_len, sizeof(char));
+	if (!new_res)
+		exit(10);
 	ft_strcpy(new_res, pars_qoutes->res);
 	free(pars_qoutes->res);
 	pars_qoutes->res = new_res;
@@ -90,16 +92,33 @@ char	*parse_quotes(char **str)
 
 void parser(t_minish *minish)
 {
-	char	*str;
+	char	*line;
 	int		i;
+	char	*str_in_quots;
 
 	i = 0;
-	str = ft_strdup(minish->line);
-	while (str[i])
+//	char *first_space = ft_strchr(minish->line, ' ');
+//	if (!first_space)
+//	{
+//		minish->cmd[0] = ft_substr(minish->line, 0, first_space - minish->line);
+//		line = ft_strdup(first_space);
+//	}
+//	else
+	line = ft_strdup(minish->line);
+	while (line[i])
 	{
-		if (*str == '\"' || *str == '\'')
+		if (*line == '\"' || *line == '\'')
 		{
-			printf("%s\n", parse_quotes(&str));
+			char *tmp = line;
+			char *str_in_quotes = parse_quotes(&line);
+			if (str_in_quotes != NULL)
+			{
+				str_in_quots = ft_strjoin(tmp, str_in_quotes);
+				free(str_in_quotes);
+				free();
+			}
+			if(!str_in_quots)
+				exit(-1);
 		}
 		i++;
 	}
