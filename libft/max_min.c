@@ -13,4 +13,3 @@ long	min(long a, long b)
 	else
 		return (b);
 }
-

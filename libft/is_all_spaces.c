@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   is_all_spaces.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/28 14:15:31 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/04 21:46:10 by cvenkman         ###   ########.fr       */
+/*   Created: 2021/10/04 22:20:19 by cvenkman          #+#    #+#             */
+/*   Updated: 2021/10/04 22:21:17 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /*
-**	@brief	displays str with a '\n'
+**	@brief	check is all spaces
+**	
+**	@param	str		string to check
+**	@return	int	0 if all are space, -1 if not
 */
-
-void	ft_putendl_fd(char *str, int fd)
+int is_all_spaces(char *str)
 {
-	ft_putstr_fd(str, fd);
-	write(fd, "\n", 1);
+	int i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (str[i] != ' ')
+			return (-1);
+		i++;
+	}
+	return (0);
 }
