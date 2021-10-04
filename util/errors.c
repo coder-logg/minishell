@@ -1,16 +1,19 @@
 #include "../minishell.h"
 
+
 /*
 **	@brief	display error with ": too many arguments" from str in 2 fd
 **	
 **	@param	str		display error
 */
+
 void error_builtin(char *str)
 {
 	write(2, str, ft_strlen(str));
 	write(2, ": too many arguments", 20);
 	write(2, "\n", 1);
 }
+
 
 /*
 **	@brief	display error with "bash: " from str in 2 fd
