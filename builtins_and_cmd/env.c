@@ -1,23 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/28 14:15:31 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/04 21:46:10 by cvenkman         ###   ########.fr       */
+/*   Created: 2021/10/04 17:10:22 by cvenkman          #+#    #+#             */
+/*   Updated: 2021/10/04 21:47:22 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
 /*
-**	@brief	displays str with a '\n'
+**	@brief	env builtin
 */
-
-void	ft_putendl_fd(char *str, int fd)
+void ft_env(t_minish *minish, char **env)
 {
-	ft_putstr_fd(str, fd);
-	write(fd, "\n", 1);
+	int		i;
+	int		len;
+
+	len = 0;
+	i = 0;
+	while (minish->cmd[len])
+		len++;
+	if (len > 1)
+	{
+		error_builtin(minish->cmd[0]);
+		return ;
+	}
+	while (env[i])
+	{
+		ft_putendl_fd(env[i], 1);
+		i++;
+	}
 }

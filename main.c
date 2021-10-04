@@ -4,9 +4,9 @@ int	main(int argc, char **argv, char **env)
 {
 	t_minish	minish;
 
-	argc = 0;
+	(void)argc;
 	(void)argv; // это просто чтобы флаги не ругались
-	char *cmdline = ft_strjoin(getenv("USER"), "$>");
+	char *cmdline = ft_strjoin(getenv("USER"), "$> ");
 	while (1)
 	{
 		minish.line = readline(cmdline);
@@ -17,7 +17,7 @@ int	main(int argc, char **argv, char **env)
 			minish.cmd = ft_split(minish.line, ' ');
 			if (!minish.cmd)
 				putstr_exit("ft_split: ");
-			check(&minish, env);
+			distribution(&minish, env);
 		}
 		if (!ft_strcmp(minish.line, "exit"))
 			exit(0);

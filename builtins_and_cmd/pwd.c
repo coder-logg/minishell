@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/28 14:15:31 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/04 21:46:10 by cvenkman         ###   ########.fr       */
+/*   Created: 2021/10/04 17:10:01 by cvenkman          #+#    #+#             */
+/*   Updated: 2021/10/04 21:47:05 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
 /*
-**	@brief	displays str with a '\n'
+**	@brief	pwd builtin
 */
-
-void	ft_putendl_fd(char *str, int fd)
+void ft_pwd(t_minish *minish)
 {
-	ft_putstr_fd(str, fd);
-	write(fd, "\n", 1);
+	char *str;
+	int len;
+
+	len = 0;
+	while (minish->cmd[len])
+		len++;
+	if (len > 1)
+	{
+		error_builtin(minish->cmd[0]);
+		return ;
+	}
+	str = getenv("PWD");
+	ft_putendl_fd(str, 1);
 }

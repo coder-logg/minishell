@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   is_all_spaces.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/02 14:17:09 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/02 14:19:07 by cvenkman         ###   ########.fr       */
+/*   Created: 2021/10/04 22:20:19 by cvenkman          #+#    #+#             */
+/*   Updated: 2021/10/04 22:21:17 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strcmp(char const *str1, char const *str2)
+/*
+**	@brief	check is all spaces
+**	
+**	@param	str		string to check
+**	@return	int	0 if all are space, -1 if not
+*/
+int is_all_spaces(char *str)
 {
-	int	i;
+	int i;
 
 	i = 0;
-	while (str1[i] || str2[i])
+	while(str[i])
 	{
-		if (str1[i] != str2[i])
-			return ((unsigned char)str1[i] - (unsigned char)str2[i]);
+		if (str[i] != ' ')
+			return (-1);
 		i++;
 	}
 	return (0);

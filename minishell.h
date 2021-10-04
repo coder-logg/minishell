@@ -20,14 +20,25 @@ typedef struct s_minish t_minish;
 # include "libft/libft.h"
 # include "parser/parser.h"
 
+#define NO_FILE_OR_DIR "No such file or directory"
+#define CMD_NOT_FOUND "command not found"
+#define STRJOIN_ERROR "Error in ft_strjoin"
 struct s_minish
 {
 	char	*line;
 	char	**cmd;
 };
 
+// util/utils.c
 int		is_all_spaces(char *str);
-void	check(t_minish *minish, char **env);
-void	cmd_not_found(char *cmd);
+
+// util/errors.c for parse
+void	cmd_not_found(char *cmd, char *str);
 void	error_builtin(char *str);
+
+// builtins
+void	distribution(t_minish *minish, char **env);
+void	ft_pwd(t_minish *minish);
+void	ft_env(t_minish *minish, char **env);
+int		run_cmd(char *cmd_str, char **env);
 #endif
