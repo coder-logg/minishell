@@ -15,7 +15,7 @@ SRCS = 	ft_isprint.c		ft_strlen.c		ft_memchr.c\
 		ft_lstnew.c			ft_lstsize.c	ft_lstlast.c\
 		ft_lstadd_back.c	ft_lstdelone.c	ft_lstclear.c\
 		ft_lstadd_front.c	ft_lstiter.c	max_min.c\
-		is_all_spaces.c
+		is_all_spaces.c		ft_lstmap.c
 	
 RM		=	rm -f
 OBJS	=	$(SRCS:.c=.o)

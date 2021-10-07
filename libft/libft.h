@@ -79,5 +79,6 @@ int		error_return(char *str);
 int		is_all_spaces(char *str);
 long	max(long a, long b);
 long	min(long a, long b);
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 #endif
