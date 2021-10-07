@@ -35,4 +35,7 @@ int		is_all_spaces(char *str);
 void	check(t_minish *minish, char **env);
 void	cmd_not_found(char *cmd);
 void	error_builtin(char *str);
+void	*check_malloc(void *ptr);
+void	set_free(void **var, void *new);
+
 #endif

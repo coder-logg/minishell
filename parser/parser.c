@@ -1,13 +1,5 @@
-# include "../minishell.h"
-
-typedef	struct s_parse_quotes
-{
-	char			*res;
-	char			*first_quot;
-	char			*second_quot;
-	char			*env_val;
-	char			env_name[200];
-}				t_parse_quotes;
+#include "../minishell.h"
+#include "parser.h"
 
 bool is_env_chr(char c)
 {
@@ -18,108 +10,86 @@ bool is_env_chr(char c)
 
 /**
  * @brief return environment variable's value
- *
  * @param str should point to symbol '$'
  * @param env_name buffer to environment variable's name
- *
  * @return environment variable's value or <b><i>NULL</i></b> if doesn't
  * exist or if <i><b>str = NULL</b></i>
  */
-char *read_env(char **str, char *env_name)
+char *get_env(char *str, char *env_name)
 {
 	unsigned int	j;
 
-	if (**str == '$')
+	if (*str == '$')
 	{
 		ft_bzero(env_name, 200);
 		j = 0;
-		if (ft_isdigit(*(*str)++))
+		env_name[j++] = *str;
+		if (ft_isdigit(*(++str)))
 			return (NULL);
-		while (**str && **str != '\"' && is_env_chr(**str))
-			env_name[j++] = *(*str)++;
+		while (*str && *str != '\"' && is_env_chr(*str))
+			env_name[j++] = (*str)++;
 		return (getenv(env_name));
 	}
 	return (NULL);
 }
 
-void replace_env_name_with_val(unsigned int *i, t_parse_quotes *pars_qoutes)
+void	read_env(char **str, int pos)
 {
-	char *new_res;
-	unsigned long new_str_len;
+	char	*env_val;
+	char	env_name[200];
 
-	new_str_len = pars_qoutes->second_quot - pars_qoutes->first_quot - 1 -
-			ft_strlen(pars_qoutes->env_name) + ft_strlen(pars_qoutes->env_val);
-	new_res = ft_calloc(new_str_len, sizeof(char));
-	if (!new_res)
-		exit(10);
-	ft_strcpy(new_res, pars_qoutes->res);
-	free(pars_qoutes->res);
-	pars_qoutes->res = new_res;
-	ft_strcpy(pars_qoutes->res + (*i), pars_qoutes->env_val);
-	(*i) += ft_strlen(pars_qoutes->env_val);
+	env_val = get_env(*str + pos, env_name);
+	if (env_val)
+	{
+		set_free((void **)str,replace_subst(*str + pos, env_name, env_val));
+		free(env_val);
+	}
 }
 
-char	*parse_quotes(char **str)
+int parse_quotes(char **str, int i)
 {
-	unsigned int	i;
-	t_parse_quotes	pars_qoutes;
+	char	quot;
 
-	if (**str != '\"' && **str != '\'')
-		return (NULL);
-	pars_qoutes.first_quot = (*str);
-	pars_qoutes.second_quot = ft_strchr(*str + 1, *pars_qoutes.first_quot);
-//	todo if quotes aren't closed make heredoc
-	if (pars_qoutes.second_quot == NULL)
-		pars_qoutes.second_quot = pars_qoutes.first_quot + ft_strlen(pars_qoutes.first_quot + 1);
-	pars_qoutes.res = ft_calloc(pars_qoutes.second_quot - pars_qoutes.first_quot, sizeof(char));
-	if (!pars_qoutes.res)
-		exit(10);
-	i = 0;
-	while (*(*str)++)
+	if ((*str)[i] != '\"' && (*str)[i] != '\'')
+		return (i);
+	quot = (*str)[i];
+	set_free((void **)str,replace_subst(*str + i, "\"", ""));
+	while ((*str)[i++])
 	{
-		if (**str == '$' && *pars_qoutes.first_quot == '\"')
+		if ((*str)[i] == '$' && quot == '\"')
+			read_env(str, i);
+		if ((*str)[i] == quot)
 		{
-			pars_qoutes.env_val = read_env(str, pars_qoutes.env_name);
-			if (pars_qoutes.env_val)
-				replace_env_name_with_val(&i, &pars_qoutes);
-		}
-		if (**str == *pars_qoutes.first_quot)
+			set_free((void **)str,replace_subst(*str + i, "\"", ""));
 			break ;
-		pars_qoutes.res[i++] = **str;
+		}
 	}
-	return (pars_qoutes.res);
+	return (i);
 }
 
 void parser(t_minish *minish)
 {
 	char	*line;
 	int		i;
-	char	*str_in_quots;
 
 	i = 0;
-//	char *first_space = ft_strchr(minish->line, ' ');
-//	if (!first_space)
-//	{
-//		minish->cmd[0] = ft_substr(minish->line, 0, first_space - minish->line);
-//		line = ft_strdup(first_space);
-//	}
-//	else
 	line = ft_strdup(minish->line);
 	while (line[i])
 	{
-		if (*line == '\"' || *line == '\'')
+		if (line[i] == '\"' || line[i] == '\'')
 		{
-			char *tmp = line;
-			char *str_in_quotes = parse_quotes(&line);
-			if (str_in_quotes != NULL)
-			{
-				str_in_quots = ft_strjoin(tmp, str_in_quotes);
-				free(str_in_quotes);
-				free();
-			}
-			if(!str_in_quots)
-				exit(-1);
+			i = parse_quotes(&line, i);
 		}
+		if (line[i] == '$')
+			read_env(&line, i);
 		i++;
 	}
+	char *first_space = ft_strchr(minish->line, ' ');
+	if (!first_space)
+	{
+		minish->cmd[0] = ft_substr(minish->line, 0, first_space - minish->line);
+		line = ft_strdup(first_space);
+	}
+	else
+		line = ft_strdup(minish->line);
 }

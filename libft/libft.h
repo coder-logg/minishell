@@ -77,5 +77,6 @@ int		ft_lstsize(t_list *lst);
 void	perror_exit(char *str);
 long	max(long a, long b);
 long	min(long a, long b);
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 #endif
