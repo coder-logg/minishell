@@ -1,5 +1,4 @@
 #include "../minishell.h"
-#include "parser.h"
 
 bool is_env_chr(char c)
 {
@@ -85,7 +84,7 @@ void parser(t_minish *minish)
 		i++;
 	}
 	char *first_space = ft_strchr(minish->line, ' ');
-	if (!first_space)
+	if (first_space)
 	{
 		minish->cmd[0] = ft_substr(minish->line, 0, first_space - minish->line);
 		line = ft_strdup(first_space);

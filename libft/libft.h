@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 18:43:54 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/09/20 20:11:59 by tphlogis         ###   ########.fr       */
+/*   Updated: 2021/10/08 11:29:27 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 void	putstr_exit(char *str);
 int		ft_lstsize(t_list *lst);
 void	perror_exit(char *str);
+int		error_return(char *str);
+int		is_all_spaces(char *str);
 long	max(long a, long b);
 long	min(long a, long b);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
