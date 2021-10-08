@@ -18,6 +18,8 @@ void	set_free(void **var, void *new)
 
 	if (var == NULL)
 		return ;
+	if (*var == new)
+		return ;
 	tmp = *var;
 	*var = new;
 	if (tmp)
