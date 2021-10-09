@@ -20,15 +20,21 @@ typedef struct s_minish t_minish;
 # include "libft/libft.h"
 # include "parser/parser.h"
 
-
 # define NO_FILE_OR_DIR "No such file or directory"
 # define CMD_NOT_FOUND "command not found"
 # define STRJOIN_ERROR "Error in ft_strjoin"
+
+typedef struct s_cmd
+{
+	char	*cmd;
+	char	**cmd_splited;
+}			t_cmd;
 
 struct s_minish
 {
 	char	*line;
 	char	**cmd;
+	t_list	**cmdlst;
 };
 
 
@@ -36,6 +42,7 @@ struct s_minish
 int		is_all_spaces(char *str);
 void	*check_malloc(void *ptr);
 void	set_free(void **var, void *new);
+t_list	*create_node(char *cmd, char **cmd_splited);
 
 // util/errors.c for parse
 void	cmd_not_found(char *cmd, char *str);

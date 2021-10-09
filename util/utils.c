@@ -7,6 +7,16 @@ void	*check_malloc(void *ptr)
 	return (ptr);
 }
 
+t_list	*create_node(char *cmd, char **cmd_splited)
+{
+	t_cmd	*new;
+
+	new = ft_calloc(1, sizeof(t_minish));
+	new->cmd = cmd;
+	new->cmd_splited = cmd_splited;
+	return (ft_lstnew(new));
+}
+
 /**
  * free <b><i>var</i></b> and set it <b><i>new</i></b>
  * @param var pointer to the variable with pointer that will be freed
