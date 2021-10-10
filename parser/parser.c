@@ -11,11 +11,11 @@ bool is_env_chr(char c)
 /**
  * @brief return environment variable's value
  * @param str should point to symbol '$'
- * @param env_name buffer to environment variable's name
+ * @param env_name_dst buffer to environment variable's name
  * @return environment variable's value or <b><i>NULL</i></b> if doesn't
  * exist or if <i><b>str = NULL</b></i>
  */
-char *get_env(char *str, char *env_name)
+char *get_env(char *str, char *env_name_dst)
 {
 	unsigned int	j;
 
@@ -25,8 +25,8 @@ char *get_env(char *str, char *env_name)
 		if (ft_isdigit(*(++str)))
 			return (NULL);
 		while (*str && *str != '\"' && is_env_chr(*str))
-			env_name[j++] = *(str++);
-		return (getenv(env_name));
+			env_name_dst[j++] = *(str++);
+		return (getenv(env_name_dst));
 	}
 	return (NULL);
 }
@@ -91,17 +91,43 @@ int count_symbol_occur(char *str, char ch)
 	return(counter);
 }
 
+void if_tab_or_space(t_minish *minish, int i, char **line, char if_end)
+{
+	static int	prev_spc = 0;
+	static int	words_cntr = 0;
+	char		ch_str[2];
+
+	ch_str[1] = '\0';
+	if (i == 0)
+		words_cntr = 0;
+	(void)if_end;
+	if ((*line)[i] == '\t')
+	{
+		ch_str[0] = '\t';
+		set_free((void **)line, replace_subst(*line, ch_str, " ", i));
+	}
+	if ((*line)[i] == ' ' || !(*line)[i])
+	{
+		set_free((void **) line, shrink_chs_one(*line, i, ' '));
+		minish->cmd[words_cntr++] = check_malloc(
+				ft_substr(*line + prev_spc, 0, i - prev_spc));
+		prev_spc = i + 1;
+	}
+//	if (if_end == 'e')
+//		minish->cmd[words_cntr++] = check_malloc(
+//				ft_substr(*line + prev_spc, 0, i - prev_spc));
+}
+
 void parser(t_minish *minish)
 {
 	char	*line;
 	int		i;
-	int		prev_spc;
-	int		words_cntr;
+	char	ch_str[2];
 
 	i = 0;
-	words_cntr = 0;
-	prev_spc = 0;
-	line = ft_strdup(minish->line);
+	ch_str[1] = '\0';
+	line = ft_strtrim(minish->line, " ");
+	minish->cmdlst = create_node(NULL, NULL);
 	minish->cmd = check_malloc(
 			ft_calloc(count_symbol_occur(line, ' ') + 1, sizeof(char *)));
 	while (line[i])
@@ -116,30 +142,25 @@ void parser(t_minish *minish)
 			i = read_env(&line, i);
 			continue ;
 		}
-		if (line[i] == '\t')
+		if_tab_or_space(minish, i, &line, 0);
+		if (line[i] == '|')
 		{
-			char ch[2];
-			ch[0] = '\t';
-			ch[1] = '\0';
-			set_free((void **)&line,replace_subst(line, ch, " ", i));
-		}
-		if (line[i] == ' ')
-		{
-			set_free((void **)&line, collapse_symbols(line, i, ' '));
-			minish->cmd[words_cntr++] = check_malloc(
-					ft_substr(line + prev_spc, 0, i - prev_spc));
-			prev_spc = i + 1;
+			ch_str[0] = '|';
+			if (line[i - 1] != ' ')
+				set_free((void **)&line,replace_subst(line, ch_str, " |", i++));
+			if (line[i + 1] && line[i + 1] != ' ')
+				set_free((void **)&line,replace_subst(line, ch_str, "| ", i));
+
 		}
 		i++;
 	}
 	minish->line = line;
-	minish->cmd[words_cntr++] = check_malloc(
-			ft_substr(line + prev_spc, 0, i - prev_spc));
+	if_tab_or_space(minish, i, &line, 'e');
 
 //	i = 0;
 //
 //	while (i < words_cntr)
 //	{
-//		printf("%s\n", minish->cmd[i++]);
+//		printf("%s\n", minish->cmd_splited[i++]);
 //	}
 }

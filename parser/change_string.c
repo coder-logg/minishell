@@ -38,7 +38,7 @@ char	*replace_subst(char *str, char *substr, char *replacement, int pos)
  * in this position in string or <b><i>str</i></b> if there isn't
  * repeating characters
  */
-char	*collapse_symbols(char *str, int pos, char ch)
+char	*shrink_chs_one(char *str, int pos, char ch)
 {
 	int		i;
 	char	*to_collapse;
@@ -52,7 +52,7 @@ char	*collapse_symbols(char *str, int pos, char ch)
 		i++;
 	if (i == 0 || i == 1)
 		return (str);
-	to_collapse = ft_calloc(i + 1, sizeof(char));
+	to_collapse = check_malloc(ft_calloc(i + 1, sizeof(char)));
 	ft_strlcpy(to_collapse, str + pos, i + 1);
 	res = replace_subst(str, ch_str, to_collapse, pos);
 	free(to_collapse);

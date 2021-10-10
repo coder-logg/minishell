@@ -12,15 +12,7 @@ int	main(int argc, char **argv, char **env)
 		minish.line = readline(cmdline);
 		add_history(minish.line);
 		parser(&minish);
-		if (is_all_spaces(minish.line) != 0)
-		{
-			minish.cmd = ft_split(minish.line, ' ');
-			if (!minish.cmd)
-				putstr_exit("ft_split: ");
-			distribution(&minish, env);
-		}
-		if (!ft_strcmp(minish.line, "exit"))
-			exit(0);
+		distribution(&minish, env);
 	}
 	return (0);
 }

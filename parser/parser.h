@@ -3,6 +3,6 @@
 
 void	parser(t_minish *minish);
 char	*replace_subst(char *str, char *substr, char *replacement, int pos);
-char	*collapse_symbols(char *str, int pos, char ch);
+char	*shrink_chs_one(char *str, int pos, char ch);
 
 #endif
