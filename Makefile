@@ -1,6 +1,6 @@
 NAME	=	minishell
 
-PARSER	=	$(addprefix parser/, parser.c change_string.c)
+PARSER	=	$(addprefix parser/, parser.c string.c read_env.c)
 
 
 SRCS	=	${PARSER} main.c\

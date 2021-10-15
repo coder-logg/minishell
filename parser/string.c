@@ -30,7 +30,8 @@ char	*replace_subst(char *str, char *substr, char *replacement, int pos)
 }
 
 /**
- * Collapse few repeating characters to a single character.
+ * Shrink few repeating characters to a single character.
+ * Example: "aaaa" -> "a".
  * @param str string to change
  * @param pos position with symbols to replace
  * @param ch symbol to collapse
@@ -57,4 +58,21 @@ char	*shrink_chs_one(char *str, int pos, char ch)
 	res = replace_subst(str, ch_str, to_collapse, pos);
 	free(to_collapse);
 	return (res);
+}
+
+/**
+ * counts number of occurrences of character <b><i>ch</i></b>
+ * in string <b><i>str</i></b>
+ */
+int count_symbol_occur(char *str, char ch)
+{
+	int counter;
+
+	counter = 0;
+	while (*(str))
+	{
+		if (*str++ == ch)
+			counter++;
+	}
+	return(counter);
 }

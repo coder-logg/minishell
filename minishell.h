@@ -41,6 +41,7 @@ struct s_minish
 void	*check_malloc(void *ptr);
 void	set_free(void **var, void *new);
 t_list	*create_node(char *cmd, char **cmd_splited);
+void	destroy_node(void *content);
 
 // util/errors.c for parse
 void	cmd_not_found(char *cmd, char *str);
