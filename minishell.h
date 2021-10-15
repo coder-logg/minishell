@@ -34,15 +34,14 @@ struct s_minish
 {
 	char	*line;
 	char	**cmd;
-	t_list	**cmdlst;
+	t_list	*cmdlst;
 };
 
-
 // util/utils.c
-int		is_all_spaces(char *str);
 void	*check_malloc(void *ptr);
 void	set_free(void **var, void *new);
 t_list	*create_node(char *cmd, char **cmd_splited);
+void	destroy_node(void *content);
 
 // util/errors.c for parse
 void	cmd_not_found(char *cmd, char *str);

@@ -9,12 +9,29 @@ void	*check_malloc(void *ptr)
 
 t_list	*create_node(char *cmd, char **cmd_splited)
 {
-	t_cmd	*new;
+	t_cmd	*elem;
 
-	new = ft_calloc(1, sizeof(t_minish));
-	new->cmd = cmd;
-	new->cmd_splited = cmd_splited;
-	return (ft_lstnew(new));
+	elem = (t_cmd *)malloc(sizeof(t_cmd));
+	check_malloc(elem);
+	elem->cmd = cmd;
+	elem->cmd_splited = cmd_splited;
+	return (check_malloc(ft_lstnew(elem)));
+}
+
+void destroy_node(void *content)
+{
+	t_cmd	*cast;
+	int		i;
+
+	i = 0;
+	cast = (t_cmd *)content;
+	set_free((void **)&cast->cmd, NULL);
+	while (i < arr_len(((t_cmd *)content)->cmd_splited))
+	{
+		free(((t_cmd *)content)->cmd_splited[i]);
+		i++;
+	}
+	set_free((void **)&cast->cmd_splited, NULL);
 }
 
 /**

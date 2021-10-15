@@ -1,52 +1,31 @@
 #include "../minishell.h"
-#include "parser.h"
 
-bool is_env_chr(char c)
+int	arr_len(char **cmd_splited)
 {
-	if (ft_isalnum(c) || c == '_')
-		return (true);
-	return (false);
+	int	i;
+
+	i = 0;
+	while (cmd_splited[i] != NULL)
+		i++;
+	return (i);
 }
 
-/**
- * @brief return environment variable's value
- * @param str should point to symbol '$'
- * @param env_name buffer to environment variable's name
- * @return environment variable's value or <b><i>NULL</i></b> if doesn't
- * exist or if <i><b>str = NULL</b></i>
- */
-char *get_env(char *str, char *env_name)
+void	*resize_strarr(char **arr, size_t arr_len)
 {
-	unsigned int	j;
+	char	**new_arr;
 
-	if (*str == '$')
-	{
-		j = 0;
-		if (ft_isdigit(*(++str)))
-			return (NULL);
-		while (*str && *str != '\"' && is_env_chr(*str))
-			env_name[j++] = *(str++);
-		return (getenv(env_name));
-	}
-	return (NULL);
+//	if (arr_len > 0)
+		new_arr = (char	**)check_malloc(ft_calloc(arr_len + 2, sizeof(char *)));
+//	else
+//		new_arr = (char	**)check_malloc(ft_calloc(2, sizeof(char *)));
+	if (arr_len >= 1)
+		ft_memcpy(new_arr, arr, sizeof(char *) * (arr_len + 1));
+	new_arr[arr_len + 1] = NULL;
+	free(arr);
+	return (new_arr);
 }
 
-int	read_env(char **str, int pos)
-{
-	char	*env_val;
-	char	env_name[200];
-
-	ft_bzero(env_name, 200);
-	env_name[0] = '$';
-	env_val = get_env(*str + pos, env_name + 1);
-	if (env_val)
-	{
-		set_free((void **)str, replace_subst(*str, env_name, env_val, 0));
-	}
-	return (pos + ft_strlen(env_val));
-}
-
-int parse_quotes(char **str, int i)
+static int parse_quotes(char **str, int i)
 {
 	char	quot;
 
@@ -74,72 +53,143 @@ int parse_quotes(char **str, int i)
 	return (i);
 }
 
-/**
- * counts number of occurrences of character <b><i>ch</i></b>
- * in string <b><i>str</i></b>
- */
-int count_symbol_occur(char *str, char ch)
+void	cmdlst_add_elm(t_minish *msh, const char *prev_pipe, int i)
 {
-	int counter;
+	t_list	*lst_new;
+	char	**splited;
+	char	*cmd;
 
-	counter = 0;
-	while (*(str))
+	splited = check_malloc(ft_calloc(1, sizeof(char *)));
+	cmd = check_malloc(ft_substr(prev_pipe, 0, msh->line + i - prev_pipe));
+	splited[0] = NULL;
+	lst_new = create_node(cmd, splited);
+	ft_lstadd_back(&msh->cmdlst, lst_new);
+}
+
+void	divide_by_pipe(t_minish *msh)
+{
+	char	*prev_pipe;
+	int		i;
+	char	quot;
+
+	i = 0;
+	prev_pipe = ft_strchr(msh->line, '|');
+	if (prev_pipe)
 	{
-		if (*str++ == ch)
-			counter++;
+		prev_pipe = msh->line;
+		while (msh->line[i])
+		{
+			if (msh->line[i] == '\'' || msh->line[i] == '"')
+			{
+				quot = msh->line[i];
+				while (msh->line[i] && msh->line[i] != quot)
+					i++;
+			}
+			if (msh->line[i] == '|')
+			{
+				cmdlst_add_elm(msh, prev_pipe, i);
+				prev_pipe = msh->line + i + 1;
+			}
+			i++;
+		}
+		if ((i > 0 &&  msh->line[i - 1] != '|') || prev_pipe == msh->line)
+			cmdlst_add_elm(msh, prev_pipe, i);
 	}
-	return(counter);
+	else
+		cmdlst_add_elm(msh, msh->line, ft_strlen(msh->line));
+}
+
+static void if_tab_or_space(t_cmd *lst_cont, int i, char **cmd)
+{
+	static int	prev_spc = 0;
+	static int	cmd_splited_len = 0;
+	char		ch_str[2];
+
+	ch_str[1] = '\0';
+	if (i == 0)
+	{
+		cmd_splited_len = 0;
+		prev_spc = 0;
+	}
+	if ((*cmd)[i] == '\t')
+	{
+		ch_str[0] = '\t';
+		set_free((void **)cmd, replace_subst(*cmd, ch_str, " ", i));
+	}
+	if ((*cmd)[i] == ' ' || !(*cmd)[i + 1]) // maybe error
+	{
+		if (!(*cmd)[i + 1])
+			i++;
+		set_free((void **)cmd, shrink_chs_one(*cmd, i, ' '));
+		if (lst_cont)
+		{
+			lst_cont->cmd_splited = resize_strarr(lst_cont->cmd_splited,
+												  arr_len(lst_cont->cmd_splited));
+			(lst_cont->cmd_splited[cmd_splited_len++]) = check_malloc(
+					ft_substr(*cmd + prev_spc, 0, i - prev_spc));
+			prev_spc = i + 1;
+		}
+	}
+}
+
+char	*parse_to_cmd_splited(t_cmd *lst_elm, char *cmd)
+{
+	int i;
+
+	i = 0;
+	set_free((void **)&cmd, ft_strtrim(cmd, " \t"));
+	while (cmd[i])
+	{
+		if (cmd[i] == '\"' || cmd[i] == '\'')
+		{
+			i = parse_quotes(&cmd, i);
+			continue ;
+		}
+		if (cmd[i] == '$')
+		{
+			i = read_env(&cmd, i);
+			continue ;
+		}
+		if_tab_or_space(lst_elm, i, &cmd);
+		i++;
+	}
+	if (!ft_strchr(cmd, ' ') && lst_elm)
+	{
+		lst_elm->cmd_splited = resize_strarr(lst_elm->cmd_splited, 0);
+		lst_elm->cmd_splited[0] = ft_strdup(cmd);
+	}
+	return (cmd);
 }
 
 void parser(t_minish *minish)
 {
-	char	*line;
-	int		i;
-	int		prev_spc;
-	int		words_cntr;
+	t_list	*elem;
+	t_cmd	*cast;
 
-	i = 0;
-	words_cntr = 0;
-	prev_spc = 0;
-	line = ft_strdup(minish->line);
-	minish->cmd = check_malloc(
-			ft_calloc(count_symbol_occur(line, ' ') + 1, sizeof(char *)));
-	while (line[i])
+	set_free((void **)&minish->line, ft_strtrim(minish->line, " \t"));
+	if (!minish->line[0])
+		return ;
+	divide_by_pipe(minish);
+	elem = minish->cmdlst;
+	while (elem)
 	{
-		if (line[i] == '\"' || line[i] == '\'')
-		{
-			i = parse_quotes(&line, i);
-			continue ;
-		}
-		if (line[i] == '$')
-		{
-			i = read_env(&line, i);
-			continue ;
-		}
-		if (line[i] == '\t')
-		{
-			char ch[2];
-			ch[0] = '\t';
-			ch[1] = '\0';
-			set_free((void **)&line,replace_subst(line, ch, " ", i));
-		}
-		if (line[i] == ' ')
-		{
-			set_free((void **)&line, collapse_symbols(line, i, ' '));
-			minish->cmd[words_cntr++] = check_malloc(
-					ft_substr(line + prev_spc, 0, i - prev_spc));
-			prev_spc = i + 1;
-		}
-		i++;
+		cast = elem->content;
+		cast->cmd = parse_to_cmd_splited(cast, cast->cmd);
+		elem = elem->next;
 	}
-	minish->line = line;
-	minish->cmd[words_cntr++] = check_malloc(
-			ft_substr(line + prev_spc, 0, i - prev_spc));
-
-//	i = 0;
-//
-//	while (i < words_cntr)
+	minish->line = parse_to_cmd_splited(NULL, minish->line);
+//	elem = minish->cmdlst;
+//	while (elem)
 //	{
-//		printf("%s\n", minish->cmd[i++]);
+//		printf("{cmd : \"%s\",  ", ((t_cmd *)elem->content)->cmd);
+//		int i = 0;
+//		printf("cmd_splited : {");
+//		while (i < arr_len(((t_cmd *)elem->content)->cmd_splited))
+//		{
+//			printf("\"%s\", ", ((t_cmd *)elem->content)->cmd_splited[i]);
+//			i++;
+//		}
+//		printf("}}\n");
+//		elem = elem->next;
 //	}
 }
