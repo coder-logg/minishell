@@ -49,8 +49,8 @@ void	error_builtin(char *str);
 
 // builtins
 void	distribution(t_minish *minish, char **env);
-void	ft_pwd(t_minish *minish);
-void	ft_env(t_minish *minish, char **env);
-int		run_cmd(char *cmd_str, char **env);
+void	ft_pwd(char **cmd_splited);
+void	ft_env(char **cmd_splited, char **env);
+int		run_cmd(char **cmd, char **env);
 
 #endif

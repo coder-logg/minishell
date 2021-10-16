@@ -6,26 +6,26 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 17:10:01 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/04 21:47:05 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/10/16 19:31:20 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*
+/**
 **	@brief	pwd builtin
 */
-void ft_pwd(t_minish *minish)
+void ft_pwd(char **cmd_splited)
 {
 	char *str;
 	int len;
 
 	len = 0;
-	while (minish->cmd[len])
+	while (cmd_splited[len])
 		len++;
 	if (len > 1)
 	{
-		error_builtin(minish->cmd[0]);
+		error_builtin(cmd_splited[0]);
 		return ;
 	}
 	str = getenv("PWD");

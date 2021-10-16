@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-/*
+/**
 **	@brief	run script
 **
 **	@return	int	-1 if ft_stjoin problem, -3 if no such script
@@ -20,7 +20,7 @@ static int run_script(char **cmd, char **env)
 	return (-3);
 }
 
-/*
+/**
 **	@brief	run command
 **
 **	@return	int	-1 if ft_stjoin problem, -2 if no such command
@@ -48,7 +48,7 @@ static int run_file(char **path, char **cmd, char **env)
 	return (-2);
 }
 
-/*
+/**
 **	@brief	run script or file(command)
 **	
 **	@param	path	pointer to paths
@@ -64,23 +64,21 @@ static int	script_or_file(char **path, char **cmd, char **env)
 		return (run_file(path, cmd, env));
 }
 
-/*
+/**
 **	@brief	create fork and run command via execve
 **	
 **	@param	cmd_str		line with command from readline
 **	@param	env			environment
 **	@return	int			-2 if no such cmd, -3 if no scipt, -1 if fork problem
 */
-int	run_cmd(char *cmd_str, char **env)
+int	run_cmd(char **cmd, char **env)
 {
 	pid_t	pid;
 	char **path;
-	char **cmd;
 
 	char *path_str = getenv("PATH=");
 	path_str += 5;
 	path = ft_split(path_str, ':');
-	cmd = ft_split(cmd_str, ' ');
 	pid = fork();
 	if (pid < 0)
 		return(error_return("Fork failed to create a new process."));
