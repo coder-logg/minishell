@@ -181,7 +181,7 @@ void parser(t_minish *minish)
 //	elem = minish->cmdlst;
 //	while (elem)
 //	{
-//		printf("{cmd : \"%s\",  ", ((t_cmd *)elem->content)->cmd);
+		// printf("{cmd : \"%s\",  ", ((t_cmd *)elem->content)->cmd);
 //		int i = 0;
 //		printf("cmd_splited : {");
 //		while (i < arr_len(((t_cmd *)elem->content)->cmd_splited))
