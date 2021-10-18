@@ -4,15 +4,17 @@
 **	@brief	distributes commands and builtins by function
 **	@param	env			environment
 */
-void distribution(t_minish *minish, char **env)
+void distribution(char **splited, char **env)
 {
 	
-	if (ft_strcmp(((t_cmd *)minish->cmdlst->content)->cmd_splited[0], "pwd") == 0 ||
-		ft_strcmp( ((t_cmd *)minish->cmdlst->content)->cmd_splited[0], "PWD") == 0)
-		ft_pwd(((t_cmd *)minish->cmdlst->content)->cmd_splited);
-	else if (ft_strcmp(((t_cmd *)minish->cmdlst->content)->cmd_splited[0], "env") == 0 ||
-		ft_strcmp(((t_cmd *)minish->cmdlst->content)->cmd_splited[0], "ENV") == 0)
-		ft_env(((t_cmd *)minish->cmdlst->content)->cmd_splited, env);
+	if (ft_strcmp(splited[0], "pwd") == 0 ||
+		ft_strcmp(splited[0], "PWD") == 0)
+		ft_pwd(splited);
+	else if (ft_strcmp(splited[0], "env") == 0 ||
+		ft_strcmp(splited[0], "ENV") == 0)
+		ft_env(splited, env);
+	else if (!ft_strcmp(splited[0], "echo") && ft_strcmp(splited[1], "-n"))
+		echo_n(splited);
 	else
-		run_cmd(((t_cmd *)minish->cmdlst->content)->cmd_splited, env);
+		run_cmd(splited, env);
 }

@@ -48,9 +48,10 @@ void	cmd_not_found(char *cmd, char *str);
 void	error_builtin(char *str);
 
 // builtins
-void	distribution(t_minish *minish, char **env);
+void	distribution(char **splited, char **env);
 void	ft_pwd(char **cmd_splited);
 void	ft_env(char **cmd_splited, char **env);
 int		run_cmd(char **cmd, char **env);
+void	echo_n(char **cmd);
 
 #endif

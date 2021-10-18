@@ -14,7 +14,7 @@ int	main(int argc, char **argv, char **env)
 		minish.line = readline(cmdline);
 		add_history(minish.line);
 		parser(&minish);
-		distribution(&minish, env);
+		distribution(((t_cmd *)minish.cmdlst->content)->cmd_splited, env);
 		ft_lstclear(&minish.cmdlst, &destroy_node);
 		free(minish.line);
 	}
