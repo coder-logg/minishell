@@ -15,6 +15,10 @@ void distribution(char **splited, char **env)
 		ft_env(splited, env);
 	else if (!ft_strcmp(splited[0], "echo") && ft_strcmp(splited[1], "-n"))
 		echo_n(splited);
+	else if (!ft_strcmp(splited[0], "cd"))
+		cd(splited);
+	else if (!ft_strcmp(splited[0], "exit"))
+		exit(0); //todo make actually return status
 	else
 		run_cmd(splited, env);
 }

@@ -53,5 +53,6 @@ void	ft_pwd(char **cmd_splited);
 void	ft_env(char **cmd_splited, char **env);
 int		run_cmd(char **cmd, char **env);
 void	echo_n(char **cmd);
+void	cd(char **cmd_splited);
 
 #endif

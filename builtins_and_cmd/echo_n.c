@@ -11,6 +11,6 @@ void	echo_n(char **cmd)
 		return ;
 	while (i++ < cmd_len)
 	{
-		printf("%s %%", cmd[i]);
+		printf("%s", cmd[i]);
 	}
 }
