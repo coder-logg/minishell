@@ -28,6 +28,9 @@ typedef struct s_cmd
 {
 	char	*cmd;
 	char	**cmd_splited;
+	pid_t		pid;
+	int		fd_in;
+	int		fd_out;
 }			t_cmd;
 
 struct s_minish
@@ -44,7 +47,7 @@ t_list	*create_node(char *cmd, char **cmd_splited);
 void	destroy_node(void *content);
 
 // util/errors.c for parse
-void	cmd_not_found(char *cmd, char *str);
+int		cmd_not_found(char *cmd, char *str);
 void	error_builtin(char *str);
 
 // builtins
@@ -52,5 +55,6 @@ void	distribution(t_minish *minish, char **env);
 void	ft_pwd(char **cmd_splited);
 void	ft_env(char **cmd_splited, char **env);
 int		run_cmd(char **cmd, char **env);
+int		ft_pipes(t_minish *minish, char **env);
 
 #endif

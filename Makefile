@@ -5,9 +5,10 @@ PARSER	=	$(addprefix parser/, parser.c string.c read_env.c)
 
 SRCS	=	${PARSER} main.c\
 			builtins_and_cmd/env.c		builtins_and_cmd/distribution.c\
+			builtins_and_cmd/pipe.c\
 			builtins_and_cmd/pwd.c		builtins_and_cmd/run_cmd.c\
-			util/errors.c util/utils.c\
-			
+			util/errors.c				util/utils.c\
+
 OBJS		=	$(SRCS:.c=.o)
 FLAGS		=	-Wall -Wextra -Werror
 LIBFTMAKE 	=	$(MAKE) -C libft/

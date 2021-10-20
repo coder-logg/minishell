@@ -21,11 +21,12 @@ void error_builtin(char *str)
 **	@param	cmd		command
 **	@param	str		display error
 */
-void cmd_not_found(char *cmd, char *str)
+int cmd_not_found(char *cmd, char *str)
 {
 	write(2, "bash: ", 6);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
 	write(2, str, ft_strlen(str));
 	write(2, "\n", 1);
+	return (-1);
 }

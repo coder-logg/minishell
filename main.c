@@ -5,8 +5,7 @@ int	main(int argc, char **argv, char **env)
 	t_minish	minish;
 
 	(void)argc;
-	(void)argv; // это просто чтобы флаги не ругались
-	// (void)env;
+	(void)argv;
 	char *cmdline = ft_strjoin(getenv("USER"), "$>");
 	minish.cmdlst = NULL;
 	while (1)
@@ -17,6 +16,7 @@ int	main(int argc, char **argv, char **env)
 		distribution(&minish, env);
 		ft_lstclear(&minish.cmdlst, &destroy_node);
 		free(minish.line);
+		minish.line = NULL;
 	}
 	return (0);
 }

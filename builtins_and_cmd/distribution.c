@@ -6,8 +6,9 @@
 */
 void distribution(t_minish *minish, char **env)
 {
-	
-	if (ft_strcmp(((t_cmd *)minish->cmdlst->content)->cmd_splited[0], "pwd") == 0 ||
+	if (ft_strchr(minish->line, '|') != 0)
+		ft_pipes(minish, env);
+	else if (ft_strcmp(((t_cmd *)minish->cmdlst->content)->cmd_splited[0], "pwd") == 0 ||
 		ft_strcmp( ((t_cmd *)minish->cmdlst->content)->cmd_splited[0], "PWD") == 0)
 		ft_pwd(((t_cmd *)minish->cmdlst->content)->cmd_splited);
 	else if (ft_strcmp(((t_cmd *)minish->cmdlst->content)->cmd_splited[0], "env") == 0 ||

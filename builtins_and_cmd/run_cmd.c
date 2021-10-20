@@ -17,6 +17,7 @@ static int run_script(char **cmd, char **env)
 	execve(str_command, cmd, env);
 	free(str_command);
 	cmd_not_found(cmd[0], NO_FILE_OR_DIR);
+	exit(1);
 	return (-3);
 }
 
@@ -28,7 +29,7 @@ static int run_script(char **cmd, char **env)
 static int run_file(char **path, char **cmd, char **env)
 {
 	char	*str_path;
-	char	*str_command;
+	char	*str_command = NULL;
 	int		i;
 
 	i = 0;
@@ -45,6 +46,7 @@ static int run_file(char **path, char **cmd, char **env)
 	}
 	free(str_command);
 	cmd_not_found(cmd[0], CMD_NOT_FOUND);
+	exit(1);
 	return (-2);
 }
 
@@ -77,7 +79,7 @@ int	run_cmd(char **cmd, char **env)
 	char **path;
 
 	char *path_str = getenv("PATH=");
-	path_str += 5;
+	// path_str += 5;
 	path = ft_split(path_str, ':');
 	pid = fork();
 	if (pid < 0)
