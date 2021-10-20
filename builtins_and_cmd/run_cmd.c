@@ -77,9 +77,9 @@ int	run_cmd(char **cmd, char **env)
 {
 	pid_t	pid;
 	char **path;
+	char *path_str;
 
-	char *path_str = getenv("PATH=");
-	// path_str += 5;
+	path_str = getenv("PATH=");
 	path = ft_split(path_str, ':');
 	pid = fork();
 	if (pid < 0)

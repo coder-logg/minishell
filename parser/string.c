@@ -76,3 +76,14 @@ int count_symbol_occur(char *str, char ch)
 	}
 	return(counter);
 }
+
+
+char	*skip_untill_chr(char *str, char chr)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != chr)
+		i++;
+	return (str + i);
+}
