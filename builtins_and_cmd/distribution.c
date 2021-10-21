@@ -4,9 +4,11 @@
 **	@brief	distributes commands and builtins by function
 **	@param	env			environment
 */
-void distribution(char **splited, char **env)
+int distribution(char **splited, char **env)
 {
-	
+	int status;
+
+	status = 0;
 	if (ft_strcmp(splited[0], "pwd") == 0 ||
 		ft_strcmp(splited[0], "PWD") == 0)
 		ft_pwd(splited);
@@ -14,11 +16,12 @@ void distribution(char **splited, char **env)
 		ft_strcmp(splited[0], "ENV") == 0)
 		ft_env(splited, env);
 	else if (!ft_strcmp(splited[0], "echo") && ft_strcmp(splited[1], "-n"))
-		echo_n(splited);
+		status = echo_n(splited);
 	else if (!ft_strcmp(splited[0], "cd"))
-		cd(splited);
+		status = cd(splited, env);
 	else if (!ft_strcmp(splited[0], "exit"))
-		exit(0); //todo make actually return status
+		exit(0);
 	else
-		run_cmd(splited, env);
+		status = run_cmd(splited, env);
+	return (status);
 }

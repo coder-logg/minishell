@@ -1,10 +1,10 @@
 NAME	=	minishell
 
 PARSER	=	$(addprefix parser/, parser.c string.c read_env.c)
-BUILTIN	=	$(addprefix builtins_and_cmd/, env.c pwd.c run_cmd.c distribution.c echo_n.c cd.c )
+BUILTIN	=	$(addprefix builtins_and_cmd/, env.c pwd.c run_cmd.c distribution.c echo_n.c cd.c)
 
 SRCS	=	${PARSER} ${BUILTIN} main.c\
-			util/errors.c util/utils.c\
+			util/errors.c util/utils.c util/strarr_utils.c
 			
 OBJS		=	$(SRCS:.c=.o)
 FLAGS		=	-Wall -Wextra -Werror

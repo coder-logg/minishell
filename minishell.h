@@ -24,6 +24,12 @@ typedef struct s_minish t_minish;
 # define CMD_NOT_FOUND "command not found"
 # define STRJOIN_ERROR "Error in ft_strjoin"
 
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+}			t_env;
+
 typedef struct s_cmd
 {
 	char	*cmd;
@@ -33,7 +39,8 @@ typedef struct s_cmd
 struct s_minish
 {
 	char	*line;
-	char	**cmd;
+	int		status;
+	char	**env;
 	t_list	*cmdlst;
 };
 
@@ -43,16 +50,21 @@ void	set_free(void **var, void *new);
 t_list	*create_node(char *cmd, char **cmd_splited);
 void	destroy_node(void *content);
 
+// util/strarr_utils.c
+int		arr_len(char **cmd_splited);
+char	**strarr_add(char **arr, size_t arrlen, char *new);
+char	**copystr_array(char **arr);
+
 // util/errors.c for parse
 void	cmd_not_found(char *cmd, char *str);
 void	error_builtin(char *str);
 
 // builtins
-void	distribution(char **splited, char **env);
+int		distribution(char **splited, char **env);
 void	ft_pwd(char **cmd_splited);
 void	ft_env(char **cmd_splited, char **env);
 int		run_cmd(char **cmd, char **env);
-void	echo_n(char **cmd);
-void	cd(char **cmd_splited);
+int		echo_n(char **cmd);
+int		cd(char **cmd_splited, char **env);
 
 #endif

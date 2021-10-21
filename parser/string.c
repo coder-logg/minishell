@@ -55,28 +55,10 @@ char	*shrink_chs_one(char *str, int pos, char ch)
 		return (str);
 	to_collapse = check_malloc(ft_calloc(i + 1, sizeof(char)));
 	ft_strlcpy(to_collapse, str + pos, i + 1);
-	res = replace_subst(str, ch_str, to_collapse, pos);
+	res = replace_subst(str, to_collapse, ch_str, pos);
 	free(to_collapse);
 	return (res);
 }
-
-/**
- * counts number of occurrences of character <b><i>ch</i></b>
- * in string <b><i>str</i></b>
- */
-int count_symbol_occur(char *str, char ch)
-{
-	int counter;
-
-	counter = 0;
-	while (*(str))
-	{
-		if (*str++ == ch)
-			counter++;
-	}
-	return(counter);
-}
-
 
 char	*skip_untill_chr(char *str, char chr)
 {

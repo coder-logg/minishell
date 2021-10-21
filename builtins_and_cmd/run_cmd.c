@@ -74,7 +74,8 @@ static int	script_or_file(char **path, char **cmd, char **env)
 int	run_cmd(char **cmd, char **env)
 {
 	pid_t	pid;
-	char **path;
+	char	**path;
+//	int		status;
 
 	char *path_str = getenv("PATH");
 	path_str += 5;
@@ -85,5 +86,6 @@ int	run_cmd(char **cmd, char **env)
 	else if (pid == 0)
 		return (script_or_file(path, cmd, env));
 	wait(&pid);
-	return (0);
+//	return (WEXITSTATUS(status));
+	return 0;
 }

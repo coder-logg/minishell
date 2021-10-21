@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 17:10:01 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/16 19:31:20 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/10/21 00:40:11 by tphlogis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 /**
 **	@brief	pwd builtin
 */
-void ft_pwd(char **cmd_splited)
+void	ft_pwd(char **cmd_splited)
 {
-	char *str;
+	char *buf;
 	int len;
 
 	len = 0;
@@ -28,6 +28,8 @@ void ft_pwd(char **cmd_splited)
 		error_builtin(cmd_splited[0]);
 		return ;
 	}
-	str = getenv("PWD");
-	ft_putendl_fd(str, 1);
+	buf = check_malloc(ft_calloc(1024, sizeof(char)));
+	getcwd(buf, 1024);
+	ft_putendl_fd(buf, 1);
+	free(buf);
 }
