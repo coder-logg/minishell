@@ -9,14 +9,26 @@ static void run_script(char **cmd, char **env)
 {
 	char	*str_path;
 	char	*str_command;
-	str_path = getenv("PWD=");
-	str_path = ft_strjoin(str_path, "/");
-	str_command = ft_strjoin(str_path, cmd[0]);
-	if (!str_path)
-		exit(EXIT_FAILURE);
-	execve(str_command, cmd, env);
-	free(str_command);
-	cmd_not_found_exit(cmd[0], "No such file or directory");
+	
+	if (cmd[0][0] == '/')
+	{
+		execve(cmd[0], cmd, env);
+		perror_exit_bash(cmd[0]);
+	}
+	else
+	{
+		str_path = getenv("PWD=");
+		str_path = ft_strjoin(str_path, "/");
+		str_command = ft_strjoin(str_path, cmd[0]);
+		if (!str_command || !str_path)
+			exit(EXIT_FAILURE);
+		execve(str_command, cmd, env);
+		perror_exit_bash(cmd[0]);
+	}
+	// else
+	// 	if (execve(cmd[0], cmd, env) == -1)
+	// 		perror_exit("execve");
+	// printf("%s\n", str_path);
 }
 
 /**
@@ -29,7 +41,9 @@ static void run_script(char **cmd, char **env)
 */
 static void	script_or_file(char **cmd, char **env)
 {
-	if (ft_strchr(cmd[0], '.') != 0 && ft_strchr(cmd[0], '/') != 0)
+	
+	if ((ft_strchr(cmd[0], '.') != 0 && ft_strchr(cmd[0], '/') != 0) ||
+		ft_strchr(cmd[0], '/') != 0)
 		run_script(cmd, env);
 	else
 		run_cmd(cmd, env);
@@ -48,7 +62,7 @@ void	ft_command(char **cmd, char **env)
 
 	pid = fork();
 	if (pid < 0)
-		return ;
+		return(perror_return("fork"));
 	else if (pid == 0)
 		script_or_file(cmd, env);
 	if (pid > 0)

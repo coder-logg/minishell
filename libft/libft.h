@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 18:43:54 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/08 11:29:27 by                  ###   ########.fr       */
+/*   Updated: 2021/10/21 16:31:24 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <errno.h>
 
 size_t	ft_strlen(char const *str);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
@@ -76,6 +77,7 @@ void	putstr_exit(char *str);
 int		ft_lstsize(t_list *lst);
 void	perror_exit(char *str);
 int		error_return(char *str);
+void	perror_return(char *str);
 int		is_all_spaces(char *str);
 long	max(long a, long b);
 long	min(long a, long b);
