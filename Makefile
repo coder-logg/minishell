@@ -5,8 +5,8 @@ PARSER	=	$(addprefix parser/, parser.c string.c read_env.c)
 
 SRCS	=	${PARSER} main.c\
 			builtins_and_cmd/env.c		builtins_and_cmd/distribution.c\
-			builtins_and_cmd/pipe.c\
-			builtins_and_cmd/pwd.c		builtins_and_cmd/run_cmd.c\
+			builtins_and_cmd/pipe.c		builtins_and_cmd/run_cmd.c\
+			builtins_and_cmd/pwd.c		builtins_and_cmd/command.c\
 			util/errors.c				util/utils.c\
 
 OBJS		=	$(SRCS:.c=.o)

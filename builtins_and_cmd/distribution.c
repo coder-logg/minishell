@@ -15,5 +15,5 @@ void distribution(t_minish *minish, char **env)
 		ft_strcmp(((t_cmd *)minish->cmdlst->content)->cmd_splited[0], "ENV") == 0)
 		ft_env(((t_cmd *)minish->cmdlst->content)->cmd_splited, env);
 	else
-		run_cmd(((t_cmd *)minish->cmdlst->content)->cmd_splited, env);
+		ft_command(((t_cmd *)minish->cmdlst->content)->cmd_splited, env);
 }
