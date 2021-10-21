@@ -25,10 +25,6 @@ static void run_script(char **cmd, char **env)
 		execve(str_command, cmd, env);
 		perror_exit_bash(cmd[0]);
 	}
-	// else
-	// 	if (execve(cmd[0], cmd, env) == -1)
-	// 		perror_exit("execve");
-	// printf("%s\n", str_path);
 }
 
 /**
