@@ -46,15 +46,16 @@ void	set_free(void **var, void *new);
 t_list	*create_node(char *cmd, char **cmd_splited);
 void	destroy_node(void *content);
 
-// util/errors.c for parse
+// util/errors.c
 int		cmd_not_found(char *cmd, char *str);
 void	error_builtin(char *str);
+int		cmd_not_found_exit(char *cmd, char *str);
 
 // builtins
 void	distribution(t_minish *minish, char **env);
 void	ft_pwd(char **cmd_splited);
 void	ft_env(char **cmd_splited, char **env);
-int		run_cmd(char **cmd, char **env);
-int		ft_pipes(t_minish *minish, char **env);
-
+void	ft_command(char **cmd, char **env);
+void	run_cmd(char **cmd, char **env);
+void	ft_pipes(t_minish *minish, char **env);
 #endif
