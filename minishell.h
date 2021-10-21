@@ -20,9 +20,8 @@ typedef struct s_minish t_minish;
 # include "libft/libft.h"
 # include "parser/parser.h"
 
-# define NO_FILE_OR_DIR "No such file or directory"
-# define CMD_NOT_FOUND "command not found"
-# define STRJOIN_ERROR "Error in ft_strjoin"
+# define CMD_NOT_FOUND 127
+# define CMD_CAN_NOT_EXEC 126
 
 typedef struct s_cmd
 {
@@ -49,7 +48,7 @@ void	destroy_node(void *content);
 // util/errors.c
 int		cmd_not_found(char *cmd, char *str);
 void	error_builtin(char *str);
-int		cmd_not_found_exit(char *cmd, char *str);
+int		command_exit(char *cmd, char *str, int exit_code);
 
 // builtins
 void	distribution(t_minish *minish, char **env);
@@ -58,4 +57,5 @@ void	ft_env(char **cmd_splited, char **env);
 void	ft_command(char **cmd, char **env);
 void	run_cmd(char **cmd, char **env);
 void	ft_pipes(t_minish *minish, char **env);
+void	perror_exit_bash(char *str);
 #endif

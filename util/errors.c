@@ -36,12 +36,27 @@ int cmd_not_found(char *cmd, char *str)
 **	@param	str		display error
 **	@return			exit with -1
 */
-int cmd_not_found_exit(char *cmd, char *str)
+int command_exit(char *cmd, char *str, int exit_code)
 {
 	write(2, "bash: ", 6);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
 	write(2, str, ft_strlen(str));
 	write(2, "\n", 1);
-	exit(EXIT_FAILURE);
+	exit(exit_code);
+}
+
+/**
+**	@brief	executes the perror and exit with errno
+**	
+**	@param	str		display error
+*/
+void	perror_exit_bash(char *str)
+{
+	write(2, "bash: ", 6);
+	if (str)
+		perror(str);
+	else
+		perror(NULL);
+	exit(errno);
 }
