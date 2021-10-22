@@ -1,9 +1,8 @@
 #include "../minishell.h"
 
 /**
-**	@brief	run script
-**
-**	@return	int	-1 if ft_stjoin problem, -3 if no such script
+**	@brief		run script
+**	@return		int	-1 if ft_stjoin problem, -3 if no such script
 */
 static void run_script(char **cmd, char **env)
 {
@@ -28,11 +27,7 @@ static void run_script(char **cmd, char **env)
 }
 
 /**
-**	@brief	run script or file(command)
-**	
-**	@param	path	pointer to paths
-**	@param	cmd		pointer to command with parameters
-**	@param	env		environment
+**	@brief			run script or file(command)
 **	@return	int		-2 if no such cmd, -3 if no scipt, -1 if ft_strjoin problem 
 */
 static void	script_or_file(char **cmd, char **env)
@@ -46,11 +41,9 @@ static void	script_or_file(char **cmd, char **env)
 }
 
 /**
-**	@brief	create fork and run command via execve
-**	
-**	@param	cmd_str		line with command from readline
-**	@param	env			environment
-**	@return	int			-2 if no such cmd, -3 if no scipt, -1 if fork problem
+**	@brief			create fork and run command
+**	@param	cmd		pointer to command with parameters
+**	@return	int		-2 if no such cmd, -3 if no scipt, -1 if fork problem
 */
 void	ft_command(char **cmd, char **env)
 {
