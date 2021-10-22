@@ -8,8 +8,6 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	printf("%d\n", g_status);
-	// rl_outstream = stderr;
 	char *cmdline = ft_strjoin(getenv("USER"), "$>");
 	minish.cmdlst = NULL;
 	while (1)
@@ -17,7 +15,7 @@ int	main(int argc, char **argv, char **env)
 		minish.line = readline(cmdline);
 		add_history(minish.line);
 		parser(&minish);
-		distribution(&minish, env);
+		distribution(&minish, ((t_cmd *)minish.cmdlst->content)->cmd_splited, env);
 		ft_lstclear(&minish.cmdlst, &destroy_node);
 		free(minish.line);
 		minish.line = NULL;
