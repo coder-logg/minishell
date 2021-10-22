@@ -1,31 +1,28 @@
 #include "../minishell.h"
 
 /**
-**	@brief	distributes commands and builtins by function
-**	@param	env			environment
+**	@brief			distributes commands and builtins by function
+**	@param	cmd		splited command
+**	@param	env		environment
+**	@return	int		1 if it is builtin, 0 if not
 */
-void distribution(t_minish *minish, char **env)
+int	distribution(t_minish *minish, char **cmd, char **env)
 {
-	char	**splited;
-
-	splited = ((t_cmd *) minish->cmdlst->content)->cmd_splited;
-	if (ft_strchr(minish->line, '|') != 0)
-		ft_pipes(minish, env);
-	else if (ft_strcmp(splited[0], "pwd") == 0 ||
-				ft_strcmp(splited[0], "PWD") == 0)
-		ft_pwd(splited);
-	else if (ft_strcmp(splited[0], "env") == 0 ||
-				ft_strcmp(splited[0], "ENV") == 0)
-		ft_env(splited, env);
-	else if (!ft_strcmp(splited[0], "echo") && !ft_strcmp(splited[1], "-n"))
-		echo_n(splited);
-	else if (!ft_strcmp(splited[0], "cd"))
-		cd(splited, env);
-	else if (!ft_strcmp(splited[0], "exit"))
+	if (minish != NULL && ft_strchr(minish->line, '|'))
 	{
-		printf("exit\n");
-		exit(0);
+		ft_pipes(minish, env);
+		return (2);
 	}
+	if (!ft_strcmp(cmd[0], "pwd") || !ft_strcmp(cmd[0], "PWD"))
+		ft_pwd(cmd);
+	else if (!ft_strcmp(cmd[0], "env") || !ft_strcmp(cmd[0], "ENV"))
+		ft_env(cmd, env);
+	// else if ...
 	else
-		ft_command(splited, env);
+	{
+		if (minish != NULL)
+			ft_command(cmd, env);
+		return (0);
+	}
+	return (1);
 }

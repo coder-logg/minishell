@@ -65,7 +65,8 @@ char	**strarr_add(char **arr, size_t arrlen, char *new);
 char	**copystr_array(char **arr);
 
 // builtins
-void	distribution(t_minish *minish, char **env);
+int	distribution(t_minish *minish, char **cmd, char **env);
+int		builtins(char **cmd, char **env);
 void	ft_pwd(char **cmd_splited);
 void	ft_env(char **cmd_splited, char **env);
 void	ft_command(char **cmd, char **env);
