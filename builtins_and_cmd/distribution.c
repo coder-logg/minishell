@@ -17,6 +17,8 @@ int	distribution(t_minish *minish, char **cmd, char **env)
 		ft_pwd(cmd);
 	else if (!ft_strcmp(cmd[0], "env") || !ft_strcmp(cmd[0], "ENV"))
 		ft_env(cmd, env);
+	else if (!ft_strcmp(cmd[0], "cd"))
+		cd(cmd, env);
 	// else if ...
 	else
 	{
