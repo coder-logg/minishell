@@ -76,7 +76,6 @@ void	ft_pipes(t_minish *minish, char **env)
 {
 	t_list	*elem;
 	t_list	*head;
-	
 
 	elem = minish->cmdlst;
 	head = elem;

@@ -23,11 +23,17 @@ typedef struct s_minish t_minish;
 # define CMD_NOT_FOUND 127
 # define CMD_CAN_NOT_EXEC 126
 
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+}			t_env;
+
 typedef struct s_cmd
 {
 	char	*cmd;
 	char	**cmd_splited;
-	pid_t		pid;
+	pid_t	pid;
 	int		fd_in;
 	int		fd_out;
 }			t_cmd;
@@ -35,7 +41,9 @@ typedef struct s_cmd
 struct s_minish
 {
 	char	*line;
-	char	**cmd;
+	char	**env;
+	int		status;
+	t_list	*env_lst;
 	t_list	*cmdlst;
 };
 
@@ -49,6 +57,12 @@ void	destroy_node(void *content);
 int		cmd_not_found(char *cmd, char *str);
 void	error_builtin(char *str);
 int		command_exit(char *cmd, char *str, int exit_code);
+void	perror_exit_bash(char *str);
+
+// util/strarr_utils.c
+int		arr_len(char **cmd_splited);
+char	**strarr_add(char **arr, size_t arrlen, char *new);
+char	**copystr_array(char **arr);
 
 // builtins
 void	distribution(t_minish *minish, char **env);
@@ -57,5 +71,7 @@ void	ft_env(char **cmd_splited, char **env);
 void	ft_command(char **cmd, char **env);
 void	run_cmd(char **cmd, char **env);
 void	ft_pipes(t_minish *minish, char **env);
-void	perror_exit_bash(char *str);
+int		echo_n(char **cmd);
+int		cd(char **cmd_splited, char **env);
+
 #endif

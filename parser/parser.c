@@ -1,31 +1,5 @@
 #include "../minishell.h"
 
-int	arr_len(char **cmd_splited)
-{
-	int	i;
-
-	i = 0;
-	if (!cmd_splited)
-		return (0);
-	while (cmd_splited[i] != NULL)
-		i++;
-	return (i);
-}
-
-char 	**strarr_add(char **arr, size_t arr_len, char *new)
-{
-	char	**new_arr;
-
-	new_arr = (char	**)check_malloc(ft_calloc(arr_len + 2, sizeof(char *)));
-	if (arr_len >= 1 && arr)
-		ft_memcpy(new_arr, arr, sizeof(char *) * (arr_len + 1));
-	new_arr[arr_len] = new;
-	new_arr[arr_len + 1] = NULL;
-	if (arr)
-		free(arr);
-	return (new_arr);
-}
-
 static int parse_quotes(char **str, int i)
 {
 	char	quot;
@@ -159,7 +133,7 @@ char	*papse_line(char *cmd)
 	return (cmd);
 }
 
-void parser(t_minish *minish)
+void	parser(t_minish *minish)
 {
 	t_list	*elem;
 	t_cmd	*cast;
@@ -177,18 +151,4 @@ void parser(t_minish *minish)
 		elem = elem->next;
 	}
 	minish->line = papse_line(minish->line);
-//	elem = minish->cmdlst;
-//	while (elem)
-//	{
-//		 printf("{cmd : \"%s\",  ", ((t_cmd *)elem->content)->cmd);
-//		int i = 0;
-//		printf("cmd_splited : {");
-//		while (i < arr_len(((t_cmd *)elem->content)->cmd_splited))
-//		{
-//			printf("\"%s\", ", ((t_cmd *)elem->content)->cmd_splited[i]);
-//			i++;
-//		}
-//		printf("}}\n");
-//		elem = elem->next;
-//	}
 }
