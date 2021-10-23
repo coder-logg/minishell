@@ -1,33 +1,5 @@
 #include "../minishell.h"
 
-/**
- * @param env string array of environment variables
- * @param key environment variable's name
- * @return index in <b>env</b> that points to string starts with <b>key</b>
- */
-int	get_envi(char **env, const char *key)
-{
-	int	key_len;
-	int	i;
-	int arr_size;
-
-	i = 0;
-	key_len = ft_strlen(key);
-	arr_size = arr_len(env);
-	if (!ft_strchr(key, '='))
-	{
-		key = ft_strjoin(key, "=");
-		key_len++;
-	}
-	while (i < arr_size)
-	{
-		if (ft_strnstr(env[i], key, key_len))
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
 int	cd(char **cmd_splited, char **env)
 {
 	char	*path;

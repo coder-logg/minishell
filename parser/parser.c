@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-static int parse_quotes(char **str, int i)
+static int parse_quotes(char **str, int i, char **env)
 {
 	char	quot;
 
@@ -11,7 +11,7 @@ static int parse_quotes(char **str, int i)
 	{
 		if ((*str)[i] == '$' && quot == '\"')
 		{
-			i = read_env(str, i);
+			i = read_env(str, i, env);
 			continue ;
 		}
 		if ((*str)[i] == quot)
@@ -62,22 +62,6 @@ void	divide_by_pipe(t_minish *msh)
 		cmdlst_add_elm(msh, msh->line, ft_strlen(msh->line));
 }
 
-static void if_tab_or_space( int i, char **cmd)
-{
-	char		ch_str[2];
-
-	ch_str[1] = '\0';
-	if ((*cmd)[i] == '\t')
-	{
-		ch_str[0] = '\t';
-		set_free((void **)cmd, replace_subst(*cmd, ch_str, " ", i));
-	}
-	if ((*cmd)[i] == ' ')
-	{
-		set_free((void **)cmd, shrink_chs_one(*cmd, i, ' '));
-	}
-}
-
 char	**get_cmd_splited(char *cmd)
 {
 	char	**cmd_splited;
@@ -112,22 +96,31 @@ char	**get_cmd_splited(char *cmd)
 	return (cmd_splited);
 }
 
-char	*papse_line(char *cmd)
+char *papse_line(char *cmd, char **env)
 {
-	int i;
+	int		i;
+	char	ch_str[2];
 
 	i = 0;
+	ch_str[1] = '\0';
+	ch_str[0] = '\t';
 	set_free((void **)&cmd, ft_strtrim(cmd, " \t"));
 	while (cmd[i])
 	{
 		if (cmd[i] == '\"' || cmd[i] == '\'')
-			i = parse_quotes(&cmd, i);
+			i = parse_quotes(&cmd, i, env);
 		if (cmd[i] == '$')
 		{
-			i = read_env(&cmd, i);
+			i = read_env(&cmd, i, env);
 			continue ;
 		}
-		if_tab_or_space(i, &cmd);
+		if (cmd[i] == '~')
+			set_free((void **)&cmd, replace_subst(cmd, "~",
+												  getenv("HOME"), i));
+		if (cmd[i] == '\t')
+			set_free((void **)&cmd, replace_subst(cmd, ch_str, " ", i));
+		if (cmd[i] == ' ')
+			set_free((void **)&cmd, shrink_chs_one(cmd, i, ' '));
 		i++;
 	}
 	return (cmd);
@@ -146,9 +139,9 @@ void	parser(t_minish *minish)
 	while (elem)
 	{
 		cast = elem->content;
-		cast->cmd = papse_line(cast->cmd);
+		cast->cmd = papse_line(cast->cmd, minish->env);
 		cast->cmd_splited = get_cmd_splited(cast->cmd);
 		elem = elem->next;
 	}
-	minish->line = papse_line(minish->line);
+	minish->line = papse_line(minish->line, minish->env);
 }

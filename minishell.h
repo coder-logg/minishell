@@ -66,5 +66,6 @@ void	ft_env(char **cmd_splited, char **env);
 int		run_cmd(char **cmd, char **env);
 int		echo_n(char **cmd);
 int		cd(char **cmd_splited, char **env);
+int		get_envi(char **env, const char *key);
 
 #endif
