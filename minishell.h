@@ -72,7 +72,7 @@ void	ft_env(char **cmd_splited, char **env);
 void	ft_command(char **cmd, char **env);
 void	run_cmd(char **cmd, char **env);
 void	ft_pipes(t_minish *minish, char **env);
+void	echo(char **cmd_splited);
 int		echo_n(char **cmd);
 int		cd(char **cmd_splited, char **env);
-
 #endif

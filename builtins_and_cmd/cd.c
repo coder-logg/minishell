@@ -37,7 +37,6 @@ int	cd(char **cmd_splited, char **env)
 	int		oldpwdi;
 	char	*buf;
 
-	(void)env;
 	if (arr_len(cmd_splited) == 1)
 		path = getenv("HOME");
 	else

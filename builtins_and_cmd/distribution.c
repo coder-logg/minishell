@@ -16,14 +16,16 @@ int	distribution(t_minish *minish, char **cmd, char **env)
 	if (!ft_strcmp(cmd[0], "pwd") || !ft_strcmp(cmd[0], "PWD"))
 		ft_pwd(cmd);
 	else if (!ft_strcmp(cmd[0], "env") || !ft_strcmp(cmd[0], "ENV"))
-		ft_env(cmd, env);
+		ft_env(cmd, minish->env);
 	else if (!ft_strcmp(cmd[0], "cd"))
 		cd(cmd, env);
+	else if (!ft_strcmp(cmd[0], "echo") || !ft_strcmp(cmd[0], "ECHO"))
+		echo(cmd);
 	// else if ...
 	else
 	{
 		if (minish != NULL)
-			ft_command(cmd, env);
+			ft_command(cmd, minish->env);
 		return (0);
 	}
 	return (1);

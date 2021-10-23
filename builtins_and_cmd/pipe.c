@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 20:18:52 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/22 13:17:47 by                  ###   ########.fr       */
+/*   Updated: 2021/10/23 03:50:32 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@ void close_pipes(t_list	*elem)
 */
 static void	process(char **env, t_list *elem, int next_fd_in)
 {
-	char *pwd;
-
-	pwd = ft_calloc(4096, 1);
 	next_fd_in = 0;
 	((t_cmd *)elem->content)->pid = fork();
 	if (((t_cmd *)elem->content)->pid < 0)

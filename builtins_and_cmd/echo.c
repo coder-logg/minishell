@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/04 17:10:22 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/23 19:31:12 by cvenkman         ###   ########.fr       */
+/*   Created: 2021/10/23 19:29:09 by cvenkman          #+#    #+#             */
+/*   Updated: 2021/10/23 19:58:32 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/**
-**	@brief	env builtin
-*/
-void ft_env(char **cmd_splited, char **env)
+void echo(char **cmd_splited)
 {
-	int		i;
-	int		len;
+	int	i;
 
-	len = 0;
-	i = 0;
-	while (cmd_splited[len])
-		len++;
-	if (len > 1)
-		return (error_builtin(cmd_splited[0]));
-	while (env[i])
+	i = 1;
+	if (!ft_strcmp(cmd_splited[1], "-n"))
+		i = 2;
+	while (cmd_splited[i])
 	{
-		ft_putendl_fd(env[i], 1);
-		i++;
+		ft_putstr_fd(cmd_splited[i++], 1);
+		if (cmd_splited[i] != NULL)
+			write (1, " ", 1);
 	}
+	if (ft_strcmp(cmd_splited[1], "-n") != 0)
+		write (1, "\n", 1);
 }
