@@ -6,16 +6,16 @@ static int parse_quotes(char **str, int i, char **env)
 
 	if ((*str)[i] != '\"' && (*str)[i] != '\'')
 		return (i);
-	quot = (*str)[i];
-	while ((*str)[i])
+	quot = (*str)[i++];
+	while ((*str)[i] && (*str)[i] != quot)
 	{
 		if ((*str)[i] == '$' && quot == '\"')
 		{
 			i = read_env(str, i, env);
 			continue ;
 		}
-		if ((*str)[i] == quot)
-			break ;
+//		if ((*str)[i] == quot)
+//			break ;
 		i++;
 	}
 	return (i);
@@ -47,7 +47,7 @@ void	divide_by_pipe(t_minish *msh)
 		while (msh->line[i])
 		{
 			if (msh->line[i] == '\'' || msh->line[i] == '"')
-				i = skip_untill_chr(msh->line + i, msh->line[i]) - msh->line;
+				i = skip_untill_chr(msh->line + i + 1, msh->line[i]) - msh->line;
 			if (msh->line[i] == '|')
 			{
 				cmdlst_add_elm(msh, prev_pipe, i);
@@ -86,8 +86,9 @@ char	**get_cmd_splited(char *cmd)
 		{
 			ch_str[0] = cmd[i];
 			set_free((void **)&cmd, replace_subst(cmd, ch_str, "", i));
-			i = skip_untill_chr(cmd, '"') - cmd;
+			i = skip_untill_chr(cmd + i, ch_str[0]) - cmd;
 			set_free((void **)&cmd, replace_subst(cmd, ch_str, "", i));
+			continue;
 		}
 		i++;
 	}
@@ -108,7 +109,10 @@ char *papse_line(char *cmd, char **env)
 	while (cmd[i])
 	{
 		if (cmd[i] == '\"' || cmd[i] == '\'')
+		{
 			i = parse_quotes(&cmd, i, env);
+//			continue;
+		}
 		if (cmd[i] == '$')
 		{
 			i = read_env(&cmd, i, env);

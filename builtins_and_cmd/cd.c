@@ -17,7 +17,6 @@ int	cd(char **cmd_splited, char **env)
 	oldpwdi = get_envi(env, "OLDPWD");
 	if (!ft_strcmp(path, "-"))
 	{
-//		oldpwdi = get_envi(env, "OLDPWD");
 		if (oldpwdi == -1)
 		{
 			cmd_not_found("cd", "OLDPWD not set");
@@ -39,7 +38,6 @@ int	cd(char **cmd_splited, char **env)
 	pwdi = get_envi(env, "PWD");
 	pwd = env[pwdi];
 	set_free((void **)&pwd, replace_subst(pwd, "PWD=", "OLDPWD=", 0));
-//	free(env[pwdi]);
 	env[oldpwdi] = pwd;
 	env[pwdi] = ft_strjoin("PWD=", buf);
 	free(buf);
