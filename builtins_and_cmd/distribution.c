@@ -1,27 +1,32 @@
 #include "../minishell.h"
 
 /**
-**	@brief	distributes commands and builtins by function
-**	@param	env			environment
+**	@brief			distributes commands and builtins by function
+**	@param	cmd		splited command
+**	@param	env		environment
+**	@return	int		1 if it is builtin, 0 if not
 */
-int distribution(char **splited, char **env)
+int	distribution(t_minish *minish, char **cmd, char **env)
 {
-	int status;
-
-	status = 0;
-	if (ft_strcmp(splited[0], "pwd") == 0 ||
-		ft_strcmp(splited[0], "PWD") == 0)
-		ft_pwd(splited);
-	else if (ft_strcmp(splited[0], "env") == 0 ||
-		ft_strcmp(splited[0], "ENV") == 0)
-		ft_env(splited, env);
-	else if (!ft_strcmp(splited[0], "echo") && ft_strcmp(splited[1], "-n"))
-		status = echo_n(splited);
-	else if (!ft_strcmp(splited[0], "cd"))
-		status = cd(splited, env);
-	else if (!ft_strcmp(splited[0], "exit"))
-		exit(0);
+	if (minish != NULL && ft_strchr(minish->line, '|'))
+	{
+		ft_pipes(minish, env);
+		return (2);
+	}
+	if (!ft_strcmp(cmd[0], "pwd") || !ft_strcmp(cmd[0], "PWD"))
+		ft_pwd(cmd);
+	else if (!ft_strcmp(cmd[0], "env") || !ft_strcmp(cmd[0], "ENV"))
+		ft_env(cmd, minish->env);
+	else if (!ft_strcmp(cmd[0], "cd"))
+		cd(cmd, env);
+	else if (!ft_strcmp(cmd[0], "echo") || !ft_strcmp(cmd[0], "ECHO"))
+		echo(cmd);
+	// else if ...
 	else
-		status = run_cmd(splited, env);
-	return (status);
+	{
+		if (minish != NULL)
+			ft_command(cmd, minish->env);
+		return (0);
+	}
+	return (1);
 }

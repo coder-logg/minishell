@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/22 18:43:09 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/20 05:10:57 by cvenkman         ###   ########.fr       */
+/*   Created: 2021/10/23 19:29:09 by cvenkman          #+#    #+#             */
+/*   Updated: 2021/10/23 19:58:32 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-char	*ft_strdup(const char *str)
+void echo(char **cmd_splited)
 {
-	char	*new_str;
-	char	*tmp;
-	int		i;
+	int	i;
 
-	i = 0;
-	new_str = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
-	tmp = (char *)str;
-	if (!tmp || !new_str)
-		return (NULL);
-	while (tmp[i])
+	i = 1;
+	if (!ft_strcmp(cmd_splited[1], "-n"))
+		i = 2;
+	while (cmd_splited[i])
 	{
-		new_str[i] = tmp[i];
-		// new_str2++;
-		// str++;
-		i++;
+		ft_putstr_fd(cmd_splited[i++], 1);
+		if (cmd_splited[i] != NULL)
+			write (1, " ", 1);
 	}
-	new_str[i] = '\0';
-	return (new_str);
+	if (ft_strcmp(cmd_splited[1], "-n") != 0)
+		write (1, "\n", 1);
 }

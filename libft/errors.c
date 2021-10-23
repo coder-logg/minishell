@@ -6,13 +6,13 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 19:02:31 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/07 19:31:24 by tphlogis         ###   ########.fr       */
+/*   Updated: 2021/10/21 16:57:34 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
+/**
 **	@brief	display error and exit
 **	
 **	@param	str		display error
@@ -24,18 +24,35 @@ void	putstr_exit(char *str)
 	exit(EXIT_FAILURE);
 }
 
-/*
-**	@brief	executes the perror and exit
+/**
+**	@brief	executes the perror and exit with errno
 **	
 **	@param	str		display error
 */
 void	perror_exit(char *str)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
+	if (str)
+		perror(str);
+	else
+		perror(NULL);
+	exit(errno);
 }
 
-/*
+/**
+**	@brief	executes the perror
+**	
+**	@param	str		display error
+**	@return	void
+*/
+void	perror_return(char *str)
+{
+	if (str)
+		perror(str);
+	else
+		perror(NULL);
+}
+
+/**
 **	@brief	display error and return -1
 **	
 **	@param	str		display error

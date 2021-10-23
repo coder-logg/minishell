@@ -20,9 +20,8 @@ typedef struct s_minish t_minish;
 # include "libft/libft.h"
 # include "parser/parser.h"
 
-# define NO_FILE_OR_DIR "No such file or directory"
-# define CMD_NOT_FOUND "command not found"
-# define STRJOIN_ERROR "Error in ft_strjoin"
+# define CMD_NOT_FOUND 127
+# define CMD_CAN_NOT_EXEC 126
 
 typedef struct s_env
 {
@@ -34,13 +33,17 @@ typedef struct s_cmd
 {
 	char	*cmd;
 	char	**cmd_splited;
+	pid_t	pid;
+	int		fd_in;
+	int		fd_out;
 }			t_cmd;
 
 struct s_minish
 {
 	char	*line;
-	int		status;
 	char	**env;
+	int		status;
+	t_list	*env_lst;
 	t_list	*cmdlst;
 };
 
@@ -50,20 +53,26 @@ void	set_free(void **var, void *new);
 t_list	*create_node(char *cmd, char **cmd_splited);
 void	destroy_node(void *content);
 
+// util/errors.c
+int		cmd_not_found(char *cmd, char *str);
+void	error_builtin(char *str);
+int		command_exit(char *cmd, char *str, int exit_code);
+void	perror_exit_bash(char *str);
+
 // util/strarr_utils.c
 int		arr_len(char **cmd_splited);
 char	**strarr_add(char **arr, size_t arrlen, char *new);
 char	**copystr_array(char **arr);
 
-// util/errors.c for parse
-void	cmd_not_found(char *cmd, char *str);
-void	error_builtin(char *str);
-
 // builtins
-int		distribution(char **splited, char **env);
+int	distribution(t_minish *minish, char **cmd, char **env);
+int		builtins(char **cmd, char **env);
 void	ft_pwd(char **cmd_splited);
 void	ft_env(char **cmd_splited, char **env);
-int		run_cmd(char **cmd, char **env);
+void	ft_command(char **cmd, char **env);
+void	run_cmd(char **cmd, char **env);
+void	ft_pipes(t_minish *minish, char **env);
+void	echo(char **cmd_splited);
 int		echo_n(char **cmd);
 int		cd(char **cmd_splited, char **env);
 int		get_envi(char **env, const char *key);
