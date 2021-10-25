@@ -1,41 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/04 17:10:01 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/25 15:32:57 by cvenkman         ###   ########.fr       */
+/*   Created: 2021/10/24 16:28:32 by cvenkman          #+#    #+#             */
+/*   Updated: 2021/10/24 18:02:08 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/**
-**	@brief	pwd 		builtin
-**	@param	cmd_splited	command
-**	@return	int			1 if problem with getcwd, else 0
-*/
-int ft_pwd(char **cmd_splited)
+void ft_export(char **cmd_splited, char **env)
 {
-	char	*pwd;
-	int		len;
+	int	i;
 
-	len = 0;
-	pwd = ft_calloc(5000, 1);
-	while (cmd_splited[len])
-		len++;
-	if (len > 1)
-		return (error_builtin(cmd_splited[0]));
-	if (getcwd(pwd, 5000) == NULL)
+	i = 0;
+	(void)cmd_splited;
+	while (env[i])
 	{
-		perror("pwd");
-		free(pwd);
-		return (1);
+		ft_putstr_fd("declare -x ", 1);
 	}
-	else
-		ft_putendl_fd(pwd, 1);
-	free(pwd);
-	return (0);
 }

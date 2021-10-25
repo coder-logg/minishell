@@ -2,20 +2,20 @@
 
 
 /**
-**	@brief	display error with ": too many arguments" from str in 2 fd
-**	
+**	@brief			display error with ": too many arguments" from str in 2 fd
 **	@param	str		display error
+**	@return	int		0
 */
-void error_builtin(char *str)
+int error_builtin(char *str)
 {
 	write(2, str, ft_strlen(str));
 	write(2, ": too many arguments", 20);
 	write(2, "\n", 1);
+	return (0);
 }
 
 /**
-**	@brief	display error with "bash: " from str in 2 fd
-**	
+**	@brief			display error with "bash: " from str in 2 fd
 **	@param	cmd		command
 **	@param	str		display error
 */
@@ -30,8 +30,7 @@ int cmd_not_found(char *cmd, char *str)
 }
 
 /**
-**	@brief	display error with "bash: " from str in 2 fd and exit
-**	
+**	@brief			display error with "bash: " from str in 2 fd and exit
 **	@param	cmd		command
 **	@param	str		display error
 **	@return			exit with -1
@@ -47,8 +46,7 @@ int command_exit(char *cmd, char *str, int exit_code)
 }
 
 /**
-**	@brief	executes the perror and exit with errno
-**	
+**	@brief			executes the perror and exit with errno
 **	@param	str		display error
 */
 void	perror_exit_bash(char *str)

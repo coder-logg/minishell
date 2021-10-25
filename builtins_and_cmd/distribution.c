@@ -14,13 +14,17 @@ int	distribution(t_minish *minish, char **cmd, char **env)
 		return (2);
 	}
 	if (!ft_strcmp(cmd[0], "pwd") || !ft_strcmp(cmd[0], "PWD"))
-		ft_pwd(cmd);
+		g_status = ft_pwd(cmd);
 	else if (!ft_strcmp(cmd[0], "env") || !ft_strcmp(cmd[0], "ENV"))
-		ft_env(cmd, minish->env);
+		g_status = ft_env(cmd, minish->env);
 	else if (!ft_strcmp(cmd[0], "cd"))
 		cd(cmd, env);
 	else if (!ft_strcmp(cmd[0], "echo") || !ft_strcmp(cmd[0], "ECHO"))
-		echo(cmd);
+		g_status = echo(cmd);
+	else if (!ft_strcmp(cmd[0], "export"))
+		ft_export(cmd, minish->env);
+	else if (!ft_strcmp(cmd[0], "exit"))
+		g_status = ft_exit(cmd);
 	// else if ...
 	else
 	{
