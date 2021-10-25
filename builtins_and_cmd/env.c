@@ -6,16 +6,18 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 17:10:22 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/23 19:31:12 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/10/24 20:55:36 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /**
-**	@brief	env builtin
+**	@brief		env builtin
+**	@param		cmd_splited		command
+**	@return	int	0
 */
-void ft_env(char **cmd_splited, char **env)
+int		ft_env(char **cmd_splited, char **env)
 {
 	int		i;
 	int		len;
@@ -31,4 +33,5 @@ void ft_env(char **cmd_splited, char **env)
 		ft_putendl_fd(env[i], 1);
 		i++;
 	}
+	return (0);
 }

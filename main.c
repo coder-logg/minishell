@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int		g_status = 0;
+int		g_status;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -9,12 +9,11 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	// rl_outstream = stderr;
-	char *cmdline = ft_strjoin(getenv("USER"), "$>");
 	minish.cmdlst = NULL;
 	minish.env = copystr_array(env);
 	while (1)
 	{
-		minish.line = readline(cmdline);
+		minish.line = readline(X"minishell$> "RS);
 		add_history(minish.line);
 		parser(&minish);
 		if (minish.line[0])

@@ -1,41 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/04 17:10:01 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/25 15:32:57 by cvenkman         ###   ########.fr       */
+/*   Created: 2021/10/24 18:01:02 by cvenkman          #+#    #+#             */
+/*   Updated: 2021/10/25 15:51:17 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/**
-**	@brief	pwd 		builtin
-**	@param	cmd_splited	command
-**	@return	int			1 if problem with getcwd, else 0
-*/
-int ft_pwd(char **cmd_splited)
+static u_int8_t	atoi_overflow(const char *str)
 {
-	char	*pwd;
-	int		len;
+	int			i;
+	int			minus;
+	u_int64_t	num;
+
+	i = 0;
+	minus = 1;
+	num = 0;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			minus = -1;
+		i++;
+	}
+	while (str[i])
+		num = (num * 10) + (str[i++] - '0');
+	return (num * minus);
+}
+
+int	ft_exit(char **cmd_splited)
+{
+	int	len;
 
 	len = 0;
-	pwd = ft_calloc(5000, 1);
 	while (cmd_splited[len])
 		len++;
-	if (len > 1)
-		return (error_builtin(cmd_splited[0]));
-	if (getcwd(pwd, 5000) == NULL)
-	{
-		perror("pwd");
-		free(pwd);
-		return (1);
-	}
-	else
-		ft_putendl_fd(pwd, 1);
-	free(pwd);
-	return (0);
+	if (len > 2)
+		return (0);
+	if (len == 1)
+		exit(g_status);
+	exit(atoi_overflow(cmd_splited[1]));
 }
