@@ -57,6 +57,9 @@ void	set_free(void **var, void *new);
 t_list	*create_node(char *cmd, char **cmd_splited);
 void	destroy_node(void *content);
 
+// util/cvenkman.c
+int cmd_splited_len(char **cmd);
+
 // util/errors.c
 int		cmd_not_found(char *cmd, char *str);
 int		error_builtin(char *str);

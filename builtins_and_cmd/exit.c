@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 18:01:02 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/25 15:51:17 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/10/25 17:06:32 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,9 @@ static u_int8_t	atoi_overflow(const char *str)
 
 int	ft_exit(char **cmd_splited)
 {
-	int	len;
-
-	len = 0;
-	while (cmd_splited[len])
-		len++;
-	if (len > 2)
+	if (cmd_splited_len(cmd_splited) > 2)
 		return (0);
-	if (len == 1)
+	if (cmd_splited_len(cmd_splited) == 1)
 		exit(g_status);
 	exit(atoi_overflow(cmd_splited[1]));
 }
