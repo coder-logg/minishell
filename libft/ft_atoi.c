@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 18:41:57 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/05/02 11:09:31 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/10/25 17:59:19 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,24 @@ int	ft_atoi(char const *str)
 	if (minus % 2 != 0)
 		num *= -1;
 	return (num);
+}
+
+long long int	atoi_overflow(const char *str)
+{
+	int				i;
+	int				minus;
+	long long int	num;
+
+	i = 0;
+	minus = 1;
+	num = 0;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			minus = -1;
+		i++;
+	}
+	while (str[i])
+		num = (num * 10) + (str[i++] - '0');
+	return (num * minus);
 }
