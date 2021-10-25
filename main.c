@@ -13,7 +13,7 @@ int	main(int argc, char **argv, char **env)
 	minish.env = copystr_array(env);
 	while (1)
 	{
-		minish.line = readline(X"minishell$> "RS);
+		minish.line = readline("minishell$> ");
 		add_history(minish.line);
 		parser(&minish);
 		if (minish.line[0])

@@ -8,7 +8,7 @@
 */
 int	distribution(t_minish *minish, char **cmd, char **env)
 {
-	if (minish != NULL && ft_strchr(minish->line, '|'))
+	if (minish != NULL && minish->cmdlst->next)
 	{
 		ft_pipes(minish, env);
 		return (2);
@@ -18,7 +18,7 @@ int	distribution(t_minish *minish, char **cmd, char **env)
 	else if (!ft_strcmp(cmd[0], "env") || !ft_strcmp(cmd[0], "ENV"))
 		g_status = ft_env(cmd, minish->env);
 	else if (!ft_strcmp(cmd[0], "cd"))
-		cd(cmd, env);
+		g_status = cd(cmd, env);
 	else if (!ft_strcmp(cmd[0], "echo") || !ft_strcmp(cmd[0], "ECHO"))
 		g_status = echo(cmd);
 	else if (!ft_strcmp(cmd[0], "export"))

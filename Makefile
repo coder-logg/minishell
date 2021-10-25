@@ -11,6 +11,7 @@ SRCS	=	${PARSER} ${BUILTIN} main.c\
 OBJS		=	$(SRCS:.c=.o)
 FLAGS		=	-Wall -Wextra -Werror
 LIBFTMAKE 	=	$(MAKE) -C libft/
+CC		=	gcc
 
 %.o: %.c
 	cd $(@D) && $(CC) $(FLAGS) -c $(<F)
