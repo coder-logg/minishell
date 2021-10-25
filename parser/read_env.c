@@ -77,6 +77,8 @@ int read_env(char **str, int pos, char **env)
 
 	ft_bzero(env_name, 200);
 	env_name[0] = '$';
+	if (**(str + 1) && **(str + 1) != '?')
+		return (pos + 1);
 	env_val = get_env(*str + pos, env_name + 1, env);
 	if (env_val)
 	{
