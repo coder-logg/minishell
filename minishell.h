@@ -72,7 +72,7 @@ char	**strarr_add(char **arr, size_t arrlen, char *new);
 char	**copystr_array(char **arr);
 
 // builtins
-int		distribution(t_minish *minish, char **cmd, char **env);
+int		distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe);
 int		builtins(char **cmd, char **env);
 int		ft_pwd(char **cmd_splited);
 int		ft_env(char **cmd_splited, char **env);

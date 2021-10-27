@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 20:18:52 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/23 03:50:32 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/10/27 20:25:19 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void close_pipes(t_list	*elem)
 **	@param	elem			struct with command
 **	@param	next_fd_in		fd_in for next command
 */
-static void	process(char **env, t_list *elem, int next_fd_in)
+static void	process(char **env, t_list *elem, int next_fd_in, t_minish *minish)
 {
 	next_fd_in = 0;
 	((t_cmd *)elem->content)->pid = fork();
@@ -57,7 +57,7 @@ static void	process(char **env, t_list *elem, int next_fd_in)
 			close(next_fd_in);
 		if (dup2(((t_cmd *)elem->content)->fd_out, STDOUT_FILENO) == -1)
 			perror_exit("dup2");
-		if (distribution(NULL, ((t_cmd *)elem->content)->cmd_splited, env))
+		if (distribution(minish, ((t_cmd *)elem->content)->cmd_splited, env, true))
 			exit (0);
 		if (dup2(((t_cmd *)elem->content)->fd_in, STDIN_FILENO) == -1)
 			perror_exit("dup2");
@@ -69,7 +69,7 @@ static void	process(char **env, t_list *elem, int next_fd_in)
 /**
 **	@brief		create pipes for all commands
 */
-void	do_pipes(t_list *elem, char **env)
+void	do_pipes(t_list *elem, char **env, t_minish *minish)
 {
 	int fd[2];
 
@@ -83,7 +83,7 @@ void	do_pipes(t_list *elem, char **env)
 		((t_cmd *)elem->content)->fd_out = fd[1];
 		if (elem->next)
 			((t_cmd *)elem->next->content)->fd_in = fd[0];
-		process(env, elem, fd[0]);
+		process(env, elem, fd[0], minish);
 		if (((t_cmd *) elem->content)->fd_out > 2)
 			close(((t_cmd *)elem->content)->fd_out);
 		elem = elem->next;
@@ -102,7 +102,7 @@ void	ft_pipes(t_minish *minish, char **env)
 	head = elem;
 	((t_cmd *)elem->content)->fd_out = STDOUT_FILENO;
 	((t_cmd *)elem->content)->fd_in = STDIN_FILENO;
-	do_pipes(elem, env);
+	do_pipes(elem, env, minish);
 	elem = head;
 	close_pipes(elem);
 	wait_all_process(head);

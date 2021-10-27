@@ -6,9 +6,9 @@
 **	@param	env		environment
 **	@return	int		1 if it is builtin, 0 if not
 */
-int	distribution(t_minish *minish, char **cmd, char **env)
+int	distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe)
 {
-	if (minish != NULL && minish->cmdlst->next)
+	if (flag_is_pipe == false && minish->cmdlst->next)
 	{
 		ft_pipes(minish, env);
 		return (2);
@@ -28,7 +28,7 @@ int	distribution(t_minish *minish, char **cmd, char **env)
 	// else if ...
 	else
 	{
-		if (minish != NULL)
+		if (flag_is_pipe == false)
 			ft_command(cmd, minish->env);
 		return (0);
 	}
