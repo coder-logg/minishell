@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 18:43:09 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/20 05:10:57 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/10/27 22:10:12 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,18 @@
 char	*ft_strdup(const char *str)
 {
 	char	*new_str;
-	char	*tmp;
-	int		i;
+	char	*new_str2;
 
-	i = 0;
-	new_str = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
-	tmp = (char *)str;
-	if (!tmp || !new_str)
+	new_str = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	new_str2 = new_str;
+	if (!new_str)
 		return (NULL);
-	while (tmp[i])
+	while (*str)
 	{
-		new_str[i] = tmp[i];
-		// new_str2++;
-		// str++;
-		i++;
+		*new_str2 = *str;
+		new_str2++;
+		str++;
 	}
-	new_str[i] = '\0';
+	*new_str2 = '\0';
 	return (new_str);
 }

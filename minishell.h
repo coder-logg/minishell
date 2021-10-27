@@ -22,8 +22,6 @@ typedef struct s_minish t_minish;
 
 # define CMD_NOT_FOUND 127
 # define CMD_CAN_NOT_EXEC 126
-# define RS	"\x1b[0m"
-# define X  "\x1b[36m"
 
 extern int	g_status;
 
@@ -47,7 +45,6 @@ struct s_minish
 	char	*line;
 	char	**env;
 	int		status;
-	t_list	*env_lst;
 	t_list	*cmdlst;
 };
 
@@ -83,7 +80,9 @@ int		echo(char **cmd_splited);
 int		echo_n(char **cmd);
 int		cd(char **cmd_splited, char **env);
 int		get_envi(char **env, const char *key);
-void	ft_export(char **cmd_splited, char **env);
 int		ft_exit(char **cmd);
 
+// builtins/export
+int		ft_export(char **cmd_splited, char **env);
+void	print_export(char **export);
 #endif
