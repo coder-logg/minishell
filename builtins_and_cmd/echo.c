@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/23 19:29:09 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/27 20:26:54 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/10/27 21:52:43 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	check_n(_Bool *flag, char **cmd_splited, int *i)
 int	echo(char **cmd_splited)
 {
 	int		i;
-	_Bool	flag;
+	bool	flag;
 
 	check_n(&flag, cmd_splited, &i);
 	while (cmd_splited[i])

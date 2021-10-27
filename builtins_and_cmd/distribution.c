@@ -22,7 +22,9 @@ int	distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe)
 	else if (!ft_strcmp(cmd[0], "echo") || !ft_strcmp(cmd[0], "ECHO"))
 		g_status = echo(cmd);
 	else if (!ft_strcmp(cmd[0], "export"))
-		ft_export(cmd, minish->env);
+	{
+		g_status = ft_export(cmd, minish->env);
+	}
 	else if (!ft_strcmp(cmd[0], "exit"))
 		g_status = ft_exit(cmd);
 	// else if ...
