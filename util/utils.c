@@ -3,7 +3,7 @@
 void	*check_malloc(void *ptr)
 {
 	if (ptr == NULL)
-		putstr_exit("malloc error\n");
+		ft_putstr_fd("malloc error\n", 2);
 	return (ptr);
 }
 
@@ -11,8 +11,9 @@ t_list	*create_node(char *cmd, char **cmd_splited)
 {
 	t_cmd	*elem;
 
-	elem = (t_cmd *)malloc(sizeof(t_cmd));
-	check_malloc(elem);
+	elem = check_malloc((t_cmd *)ft_calloc(1, sizeof(t_cmd)));
+	if (!elem)
+		return (NULL);
 	elem->cmd = cmd;
 	elem->cmd_splited = cmd_splited;
 	return (check_malloc(ft_lstnew(elem)));

@@ -1,7 +1,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-typedef struct s_minish t_minish;
+typedef struct s_minish	t_minish;
+typedef struct s_cmd	t_cmd;
 
 # include <unistd.h>
 # include <string.h>
@@ -22,6 +23,7 @@ typedef struct s_minish t_minish;
 
 # define CMD_NOT_FOUND 127
 # define CMD_CAN_NOT_EXEC 126
+# define SYNTAX_ERROR 258
 # define RS	"\x1b[0m"
 # define X  "\x1b[36m"
 
@@ -33,20 +35,20 @@ typedef struct s_env
 	char	*value;
 }			t_env;
 
-typedef struct s_cmd
+struct s_cmd
 {
-	char	*cmd;
-	char	**cmd_splited;
-	pid_t	pid;
-	int		fd_in;
-	int		fd_out;
-}			t_cmd;
+	char		*cmd;
+	char		**cmd_splited;
+	int			rd_fds[2];
+	pid_t		pid;
+	int			fd_in;
+	int			fd_out;
+};
 
 struct s_minish
 {
 	char	*line;
 	char	**env;
-	int		status;
 	t_list	*env_lst;
 	t_list	*cmdlst;
 };
@@ -80,7 +82,6 @@ void	ft_command(char **cmd, char **env);
 void	run_cmd(char **cmd, char **env);
 void	ft_pipes(t_minish *minish, char **env);
 int		echo(char **cmd_splited);
-int		echo_n(char **cmd);
 int		cd(char **cmd_splited, char **env);
 int		get_envi(char **env, const char *key);
 void	ft_export(char **cmd_splited, char **env);
