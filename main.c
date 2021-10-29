@@ -15,7 +15,9 @@ int	main(int argc, char **argv, char **env)
 	{
 		minish.line = readline("minishell$> ");
 		if (minish.line[0])
+		{
 			add_history(minish.line);
+		}
 		else
 		{
 			free(minish.line);

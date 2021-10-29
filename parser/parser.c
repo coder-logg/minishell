@@ -83,7 +83,6 @@ char **get_cmd_splited(char *cmd, t_cmd *structure)
 	int		i;
 	char	ch_str[2];
 	int		prev_spc;
-	int		tmp;
 
 	i = 0;
 	(void)structure;
@@ -110,21 +109,19 @@ char **get_cmd_splited(char *cmd, t_cmd *structure)
 				return (NULL);
 			continue;
 		}
-		if (cmd[i] == ' ' || !cmd[i + 1])
+		if (cmd[i] == ' ')
 		{
-			tmp = i;
-			if (!cmd[i + 1])
-				tmp++;
 			cmd_splited = strarr_add(cmd_splited, arr_len(cmd_splited),
-									 ft_substr(cmd, prev_spc, tmp - prev_spc));
+									 ft_substr(cmd, prev_spc, i - prev_spc));
 			if (!cmd_splited)
 				return (NULL);
 			prev_spc = i + 1;
 		}
 		i++;
 	}
-//	cmd_splited = strarr_add(cmd_splited, arr_len(cmd_splited),
-//							 ft_substr(cmd, prev_spc, i - prev_spc));
+	if (prev_spc < i)
+		cmd_splited = strarr_add(cmd_splited, arr_len(cmd_splited),
+							 ft_substr(cmd, prev_spc, i - prev_spc));
 	free(cmd);
 	return (cmd_splited);
 }

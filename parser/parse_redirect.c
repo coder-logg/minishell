@@ -3,6 +3,7 @@
 //char *parse_heredoc(char **cmd, int fname_start, t_cmd *structure)
 //{
 //
+//	return (NULL);
 //}
 
 int parse_file_name(char **cmd, int fname_start, char **dst)
@@ -48,6 +49,7 @@ int parse_redirect(char **cmd, int i, t_cmd *structure)
 	int		oflags;
 	char	*buf;
 	int		fname_start;
+	int		len;
 
 	is_double = false;
 	oflags = 0;
@@ -57,7 +59,7 @@ int parse_redirect(char **cmd, int i, t_cmd *structure)
 	if ((*cmd)[i + 1] == ' ' || ((*cmd)[i] == (*cmd)[i + 1] && (*cmd)[i + 1]
 								&& (*cmd)[i + 2] == ' '))
 		fname_start++;
-	int len = parse_file_name(cmd, fname_start, &buf);
+	len = parse_file_name(cmd, fname_start, &buf);
 	if ((*cmd)[i] == '<')
 	{
 		if (is_double)
