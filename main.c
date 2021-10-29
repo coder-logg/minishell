@@ -14,7 +14,14 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		minish.line = readline("minishell$> ");
-		add_history(minish.line);
+		if (minish.line[0])
+			add_history(minish.line);
+		else
+		{
+			free(minish.line);
+			minish.line = NULL;
+			continue;
+		}
 		parser(&minish);
 		if (minish.line[0])
 			distribution(&minish, ((t_cmd *)minish.cmdlst->content)->cmd_splited, minish.env, false);

@@ -79,11 +79,11 @@ int read_env(char **str, int pos, char **env)
 
 	ft_bzero(env_name, 200);
 	env_name[0] = '$';
-	if (!(*str)[pos + 1])
+	if (!(*str)[pos + 1] || (*str)[pos + 1] == ' ')
 		return (pos + 1);
 	if ((*str)[pos + 1] == '?')
 	{
-		env_name[1] = '?';
+		env_name[1] = (*str)[pos + 1];
 		env_val = ft_itoa(g_status);
 		set_free((void **)str, replace_subst(*str, env_name, env_val, pos));
 		pos += ft_strlen(env_val);
