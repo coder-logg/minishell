@@ -1,6 +1,6 @@
 NAME	=	minishell
 
-PARSER	=	$(addprefix parser/, parser.c string.c read_env.c)
+PARSER	=	$(addprefix parser/, parser.c string.c read_env.c parse_redirect.c)
 BUILTIN	=	$(addprefix builtins_and_cmd/, env.c pwd.c run_cmd.c distribution.c cd.c \
 			command.c pipe.c echo.c export/export.c export/print_export.c exit.c)
 
@@ -28,10 +28,13 @@ clean:
 	rm -f  $(OBJS)
 	$(LIBFTMAKE) clean
 
+debug:
+	$(CC) -g -o $(NAME) $(SRCS) libft/*.c -lreadline
+
 fclean:
 	rm -f $(NAME) $(OBJS)
 	$(LIBFTMAKE) fclean
 
 re: fclean all
 
-.PHONY:	all clean fclean re libft/libft.a
+.PHONY:	all clean fclean re libft/libft.a debug

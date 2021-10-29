@@ -1,5 +1,6 @@
 #include "../minishell.h"
 
+// todo work across OLDPWD and PWD from env_lst
 int	cd(char **cmd_splited, char **env)
 {
 	char	*path;
@@ -14,6 +15,8 @@ int	cd(char **cmd_splited, char **env)
 	else
 		path = cmd_splited[1];
 	buf = check_malloc(ft_calloc(1024, sizeof(char)));
+	if (!buf)
+		return (-1);
 	oldpwdi = get_envi(env, "OLDPWD");
 	if (!ft_strcmp(path, "-"))
 	{
@@ -36,10 +39,17 @@ int	cd(char **cmd_splited, char **env)
 	}
 	getcwd(buf, 1024);
 	pwdi = get_envi(env, "PWD");
+	if (pwdi == -1)
+		return (-1);
 	pwd = env[pwdi];
 	set_free((void **)&pwd, replace_subst(pwd, "PWD=", "OLDPWD=", 0));
+	if (!pwd)
+		return (-1);
 	env[oldpwdi] = pwd;
-	env[pwdi] = ft_strjoin("PWD=", buf);
+	path = ft_strjoin("PWD=", buf);
+	if (!path)
+		return (-1);
+	env[pwdi] = path;
 	free(buf);
 	return (status);
 }

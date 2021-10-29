@@ -1,5 +1,31 @@
 #include "../minishell.h"
 
+char	*ft_strchrs(const char *str, const char *chrs)
+{
+	char	*res;
+	char	*tmp;
+
+	if (!str || !chrs)
+		return (NULL);
+	res = (char *)str + ft_strlen(str);
+	while (*(unsigned char *)str)
+	{
+		tmp = (char *)chrs;
+		while (*tmp)
+		{
+			if (*(unsigned char *) str == *tmp)
+				break;
+			tmp++;
+		}
+		if (*tmp && str < res)
+			res = (char *)str;
+		str++;
+	}
+	if (!(*res))
+		return (NULL);
+	return (res);
+}
+
 /**
  * Replace first occurrence substring <b><i>substr</i></b>
  * in string <b><i>str</i></b>
@@ -22,6 +48,8 @@ char	*replace_subst(char *str, char *substr, char *replacement, int pos)
 		return (str);
 	len = ft_strlen(str) - ft_strlen(substr) + ft_strlen(replacement);
 	res = check_malloc(ft_calloc(len + 1, sizeof(char)));
+	if (!res)
+		return (NULL);
 	len = place - str;
 	ft_strlcpy(res, str, len + 1);
 	ft_strcpy(res + len, replacement);

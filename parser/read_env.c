@@ -61,7 +61,9 @@ static char *get_env(char *str, char *env_name_dst, char **env)
 			return (NULL);
 		else
 		{
-			env_name_dst = ft_strjoin(env_name_dst, "=");
+			env_name_dst = check_malloc(ft_strjoin(env_name_dst, "="));
+			if (!env_name_dst)
+				return (NULL);
 			set_free((void **)&env_name_dst,
 					 replace_subst(env[j], env_name_dst, "", 0));
 			return (env_name_dst);
@@ -77,17 +79,26 @@ int read_env(char **str, int pos, char **env)
 
 	ft_bzero(env_name, 200);
 	env_name[0] = '$';
-	if (!(*str)[pos + 1] || (*str)[pos + 1] == '?')
+	if (!(*str)[pos + 1])
 		return (pos + 1);
+	if ((*str)[pos + 1] == '?')
+	{
+		env_name[1] = '?';
+		env_val = ft_itoa(g_status);
+		set_free((void **)str, replace_subst(*str, env_name, env_val, pos));
+		pos += ft_strlen(env_val);
+		free(env_val);
+		return (pos);
+	}
 	env_val = get_env(*str + pos, env_name + 1, env);
 	if (env_val)
 	{
-		set_free((void **)str, replace_subst(*str, env_name, env_val, 0));
+		set_free((void **)str, replace_subst(*str, env_name, env_val, pos));
 		return (pos + ft_strlen(env_val));
 	}
 	else
 	{
-		set_free((void **)str, replace_subst(*str, env_name, "", 0));
+		set_free((void **)str, replace_subst(*str, env_name, "", pos));
 		return (pos + 1);
 	}
 }
