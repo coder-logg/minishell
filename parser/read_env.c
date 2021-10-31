@@ -85,6 +85,8 @@ int read_env(char **str, int pos, char **env)
 	{
 		env_name[1] = (*str)[pos + 1];
 		env_val = ft_itoa(g_status);
+		if (!env_val)
+			return (1);
 		set_free((void **)str, replace_subst(*str, env_name, env_val, pos));
 		pos += ft_strlen(env_val);
 		free(env_val);

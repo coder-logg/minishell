@@ -1,10 +1,52 @@
 #include "../minishell.h"
 
-//char *parse_heredoc(char **cmd, int fname_start, t_cmd *structure)
-//{
-//
-//	return (NULL);
-//}
+int heredoc(const char *stop_w, char **env, const int *fd)
+{
+	char	*buf;
+	int		i;
+	
+	i = -1;
+	close(fd[0]);
+	while (1)
+	{
+		buf = readline("> ");
+		if (!buf)
+			break;
+		if (!ft_strcmp(buf, stop_w))
+			break;
+		while (buf[++i])
+		{
+			if (buf[i] == '$')
+				i = read_env(&buf, i, env);
+//			if (i < 0)
+//			{
+////				g_status =
+//				return (-1);
+//			}
+		}
+		write(fd[1], buf, ft_strlen(buf));
+		write(fd[1], "\n", 1);
+	}
+	return (0);
+}
+
+int parse_heredoc(char *stop_w, char **env)
+{
+	int		fd[2];
+	int		pid;
+
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		heredoc(stop_w, env, fd);
+		exit(0);
+	}
+	else
+		wait(&pid);
+	close(fd[1]);
+	return (fd[0]);
+}
 
 int parse_file_name(char **cmd, int fname_start, char **dst)
 {
@@ -15,13 +57,11 @@ int parse_file_name(char **cmd, int fname_start, char **dst)
 	int		res;
 
 	ptr = ft_strchrs(*cmd + fname_start, " <>");
-//	printf("ptr = %s\n", ptr);
 	if (ptr)
 		buf = ft_substr(*cmd, fname_start, ptr - (*cmd + fname_start));
 	else
 		buf = ft_substr(*cmd, fname_start, ft_strlen(*cmd + fname_start));
 	j = -1;
-//	printf("buf = %s\n", buf);
 	res = ft_strlen(buf);
 	while (buf[++j])
 	{
@@ -42,17 +82,32 @@ int parse_file_name(char **cmd, int fname_start, char **dst)
 	return (res);
 }
 
-int parse_redirect(char **cmd, int i, t_cmd *structure)
+int get_oflags(char redirect, bool is_double)
+{
+	int	oflags;
+
+	if (redirect == '>')
+	{
+		oflags = O_CREAT | O_WRONLY;
+		if (is_double)
+			oflags |= O_APPEND;
+		else
+			oflags |= O_TRUNC;
+	}
+	else
+		oflags = O_RDONLY;
+	return oflags;
+}
+
+int parse_redirect(char **cmd, int i, t_cmd *structure, char **env)
 {
 	bool	is_double;
 	int		index;
-	int		oflags;
 	char	*buf;
 	int		fname_start;
-	int		len;
+	size_t	len;
 
 	is_double = false;
-	oflags = 0;
 	if ((*cmd)[i] == (*cmd)[i + 1])
 		is_double = true;
 	fname_start = i + is_double + 1;
@@ -60,30 +115,23 @@ int parse_redirect(char **cmd, int i, t_cmd *structure)
 								&& (*cmd)[i + 2] == ' '))
 		fname_start++;
 	len = parse_file_name(cmd, fname_start, &buf);
-	if ((*cmd)[i] == '<')
+	index = 0;
+	if ((*cmd)[i] == '<' && is_double)
 	{
-		if (is_double)
-		{
-//			parse_heredoc(cmd, fname_start, structure);
-			return (0);
-		}
-		else
-			oflags = O_RDONLY;
-		index = 0;
+		if (structure->rd_fds[index] != -1)
+			close(structure->rd_fds[index]);
+		structure->rd_fds[index] = parse_heredoc(buf, env);
 	}
-	if ((*cmd)[i] == '>')
-	{
-		oflags = O_CREAT | O_WRONLY;
-		if (is_double)
-			oflags |= O_APPEND;
-		else
-			oflags |= O_TRUNC;
+	else if ((*cmd)[i] == '>')
 		index = 1;
+	if (!(index == 0 && is_double))
+	{
+		if (structure->rd_fds[index] != -1)
+			close(structure->rd_fds[index]);
+		structure->rd_fds[index] = open(buf, get_oflags((*cmd)[i], is_double), 0644);
+		if (structure->rd_fds[index] == -1)
+			cmd_not_found(buf, strerror(errno));
 	}
-//	printf("buf = %s\n", buf);
-	if (structure->rd_fds[index] != -1)
-		close(structure->rd_fds[index]);
-	structure->rd_fds[index] = open(buf, oflags, 0644);
 	set_free((void **)&buf, ft_substr(*cmd, i, len + fname_start - i));
 	set_free((void **)cmd, replace_subst(*cmd, buf, "", i));
 	set_free((void **)cmd, shrink_chs_one(*cmd, i - 1, ' '));

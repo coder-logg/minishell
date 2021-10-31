@@ -77,7 +77,7 @@ int	divide_by_pipe(t_minish *msh)
 	return (0);
 }
 
-char **get_cmd_splited(char *cmd, t_cmd *structure)
+char **get_cmd_splited(char *cmd, t_cmd *structure, char **env)
 {
 	char	**cmd_splited;
 	int		i;
@@ -94,7 +94,7 @@ char **get_cmd_splited(char *cmd, t_cmd *structure)
 	{
 		if (cmd[i] == '<' || cmd[i] == '>')
 		{
-			i = parse_redirect(&cmd, i, structure);
+			i = parse_redirect(&cmd, i, structure, env);
 			continue;
 		}
 		if (cmd[i] == '\"' || cmd[i] == '\'')
@@ -183,7 +183,7 @@ void	parser(t_minish *minish)
 		cast->rd_fds[0] = -1;
 		cast->rd_fds[1] = -1;
 		cast->cmd = parse_line(cast->cmd, minish->env);
-		cast->cmd_splited = get_cmd_splited(cast->cmd, cast);
+		cast->cmd_splited = get_cmd_splited(cast->cmd, cast, minish->env);
 		if (!cast->cmd_splited)
 			return ;
 		elem = elem->next;
