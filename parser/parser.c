@@ -29,15 +29,12 @@ int parse_quotes(char **str, int i, char **env)
 int	cmdlst_add_elm(t_minish *msh, const char *prev_pipe, int i)
 {
 	t_list	*lst_new;
-	char	**splited;
 	char	*cmd;
 
-	splited = check_malloc(ft_calloc(1, sizeof(char *)));
 	cmd = check_malloc(ft_substr(prev_pipe, 0, msh->line + i - prev_pipe));
-	if (!cmd || !splited)
+	if (!cmd)
 		return (-1);
-	splited[0] = NULL;
-	lst_new = create_node(cmd, splited);
+	lst_new = create_node(cmd, NULL);
 	if (!lst_new)
 		return (-1);
 	ft_lstadd_back(&msh->cmdlst, lst_new);
@@ -68,7 +65,7 @@ int	divide_by_pipe(t_minish *msh)
 			}
 			i++;
 		}
-		if ((i > 0 &&  msh->line[i - 1] != '|') || prev_pipe == msh->line)
+		if ((i > 0 && msh->line[i - 1] != '|') || prev_pipe == msh->line)
 			if (cmdlst_add_elm(msh, prev_pipe, i))
 				return (-1);
 	}
@@ -180,8 +177,6 @@ void	parser(t_minish *minish)
 	while (elem)
 	{
 		cast = elem->content;
-		cast->rd_fds[0] = -1;
-		cast->rd_fds[1] = -1;
 		cast->cmd = parse_line(cast->cmd, minish->env);
 		cast->cmd_splited = get_cmd_splited(cast->cmd, cast, minish->env);
 		if (!cast->cmd_splited)

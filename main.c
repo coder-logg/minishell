@@ -8,16 +8,14 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	// rl_outstream = stderr;
+//	rl_outstream = stderr;
 	minish.cmdlst = NULL;
 	minish.env = copystr_array(env);
 	while (1)
 	{
 		minish.line = readline("minishell$> ");
 		if (minish.line[0])
-		{
 			add_history(minish.line);
-		}
 		else
 		{
 			free(minish.line);
