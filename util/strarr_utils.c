@@ -16,12 +16,11 @@ char	**strarr_add(char **arr, size_t arrlen, char *new)
 {
 	char	**new_arr;
 
-
 	new_arr = (char	**)check_malloc(ft_calloc(arrlen + 2, sizeof(char *)));
 	if (!new_arr || !new)
 		return (NULL);
 	if (arrlen >= 1 && arr)
-		ft_memcpy(new_arr, arr, sizeof(char *) * (arrlen + 1));
+		ft_memcpy(new_arr, arr, sizeof(char *) * arrlen);
 	new_arr[arrlen] = new;
 	new_arr[arrlen + 1] = NULL;
 	if (arr)

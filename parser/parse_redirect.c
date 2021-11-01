@@ -4,7 +4,7 @@ int heredoc(const char *stop_w, char **env, const int *fd)
 {
 	char	*buf;
 	int		i;
-	
+
 	i = -1;
 	close(fd[0]);
 	while (1)
@@ -52,13 +52,12 @@ int parse_file_name(char **cmd, int fname_start, char **dst)
 {
 	int		j;
 	char	ch_str[2];
-	char	*ptr;
 	char	*buf;
 	int		res;
 
-	ptr = ft_strchrs(*cmd + fname_start, " <>");
-	if (ptr)
-		buf = ft_substr(*cmd, fname_start, ptr - (*cmd + fname_start));
+	buf = ft_strchrs(*cmd + fname_start, " <>");
+	if (buf)
+		buf = ft_substr(*cmd, fname_start, buf - (*cmd + fname_start));
 	else
 		buf = ft_substr(*cmd, fname_start, ft_strlen(*cmd + fname_start));
 	j = -1;
@@ -111,10 +110,18 @@ int parse_redirect(char **cmd, int i, t_cmd *structure, char **env)
 	if ((*cmd)[i] == (*cmd)[i + 1])
 		is_double = true;
 	fname_start = i + is_double + 1;
-	if ((*cmd)[i + 1] == ' ' || ((*cmd)[i] == (*cmd)[i + 1] && (*cmd)[i + 1]
-								&& (*cmd)[i + 2] == ' '))
+	if ((*cmd)[i + 1] == ' ' || (is_double && (*cmd)[i + 1] && (*cmd)[i + 2] == ' '))
 		fname_start++;
-	len = parse_file_name(cmd, fname_start, &buf);
+	if ((*cmd)[fname_start] == '"' || (*cmd)[fname_start] == '\'')
+	{
+		//todo обрезать по пробелу или редиректу если нет второй кавычки
+		buf = substr_till_chr(*cmd, (*cmd)[fname_start], fname_start + 1);
+		if (!buf)
+			return (-1);
+		len = ft_strlen(buf);
+	}
+	else
+		len = parse_file_name(cmd, fname_start, &buf);
 	index = 0;
 	if ((*cmd)[i] == '<' && is_double)
 	{
@@ -130,7 +137,12 @@ int parse_redirect(char **cmd, int i, t_cmd *structure, char **env)
 			close(structure->rd_fds[index]);
 		structure->rd_fds[index] = open(buf, get_oflags((*cmd)[i], is_double), 0644);
 		if (structure->rd_fds[index] == -1)
-			cmd_not_found(buf, strerror(errno));
+		{
+			if (errno == ENOTDIR)
+				cmd_not_found(buf, "No such file or directory");
+			else
+				cmd_not_found(buf, strerror(errno));
+		}
 	}
 	set_free((void **)&buf, ft_substr(*cmd, i, len + fname_start - i));
 	set_free((void **)cmd, replace_subst(*cmd, buf, "", i));
