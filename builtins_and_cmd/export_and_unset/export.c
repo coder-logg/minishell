@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 16:28:32 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/01 13:44:53 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/01 21:06:04 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,58 +61,59 @@ static int	just_export(char **env)
 	return (0);
 }
 
-int	check_valid(char *str)
+int	ft(char *str, char **export)
 {
-	int	i;
+	int	y;
+	int	key_len;
 
-	i = 0;
-	if (str[0] == '=')
-		return (0);
-	while (str[i])
+	y = 0;
+	key_len = 0;
+	while (str[key_len] != '=')
+		key_len++;
+	while (export[y])
 	{
-		if (str[i] == '?' || str[i] == '/')
-			return (0);
-		i++;
+		if (ft_strncmp(str, export[y], key_len) == 0)
+		{
+			free(export[y]);
+			export[y] = ft_strdup(str);
+			break ;
+		}
+		y++;
 	}
 	return (1);
 }
 
-char **add_export(char **cmd_splited, char **env)
+int	copy_str_for_norminette(char *str, char **export, int *i)
+{
+	export[*i] = ft_strdup(str);
+	if (!export[(*i)++])
+		return (0);
+	return (1);
+}
+
+static char	**add_export(char **cmd_splited, char **env,
+							int *ret, char **export)
 {
 	int		i;
 	int		k;
-	char	**export;
 
-	i = 1;
-	k = 0;
-	while (cmd_splited[i])
-	{
-		if (check_valid(cmd_splited[i]))
-			k++;
-		i++;
-	}
-	export = ft_calloc(sizeof(char *), (arr_len(env) + k + 1));
 	i = 0;
 	while (env[i])
 	{
 		export[i] = ft_strdup(env[i]);
-		if (!export[i])
-			return (NULL);
-		i++;
+		if (!export[i++])
+			return (return_flag(ret));
 	}
-	k = 1;
-	while (cmd_splited[k])
+	k = 0;
+	while (cmd_splited[++k])
 	{
-		if (check_valid(cmd_splited[k]))
-		{
-			export[i] = ft_strdup(cmd_splited[k]);
-			if (!export[i])
-				return (NULL);
-			i++;
-		}
-		else
-			cmd_not_found(cmd_splited[k], "not a valid identifier");
-		k++;
+		if (check_valid(cmd_splited[k], ret, env) == ALL_GOOD)
+			if (!copy_str_for_norminette(cmd_splited[k], export, &i))
+				return (return_flag(ret));
+		if (check_valid(cmd_splited[k], ret, env) == SAME_KEY)
+			ft(cmd_splited[k], export);
+		if (check_valid(cmd_splited[k], ret, env) == NOT_VALID)
+			not_valid_export(cmd_splited[k]);
 	}
 	export[i] = NULL;
 	return (export);
@@ -120,9 +121,15 @@ char **add_export(char **cmd_splited, char **env)
 
 int	ft_export(char **cmd_splited, char **env, t_minish *minish)
 {
+	int		ret;
+	char	**export;
+
+	ret = 0;
 	if (arr_len(cmd_splited) == 1)
 		return (just_export(env));
-	minish->env = add_export(cmd_splited, env);
+	export = ft_calloc(sizeof(char *),
+			(arr_len(env) + valid_export_len(cmd_splited, env) + 1));
+	minish->env = add_export(cmd_splited, env, &ret, export);
 	free_arr(env);
-	return (0);
+	return (ret);
 }

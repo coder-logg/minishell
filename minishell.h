@@ -27,6 +27,10 @@ typedef struct s_cmd	t_cmd;
 # define RS	"\x1b[0m"
 # define X  "\x1b[36m"
 
+# define ALL_GOOD 400
+# define NOT_VALID 401
+# define SAME_KEY 402
+
 extern int	g_status;
 
 typedef struct s_env
@@ -87,10 +91,15 @@ int		cd(char **cmd_splited, char **env);
 int		get_envi(char **env, const char *key);
 int		ft_exit(char **cmd);
 
-// builtins/export
+// builtins/export_and_unset
 int		ft_export(char **cmd_splited, char **env, t_minish *minish);
 void	print_export(char **export);
+int		unset(char **cmd_splited, char **env, t_minish *minish);
 
-
+// builtins/export_and_unset/export_utils.c
+void	not_valid_export(char *cmd);
+int		check_valid(char *str, int *ret, char **env);
+int		valid_export_len(char **cmd_splited, char **env);
+void	*return_flag(int *ret);
 
 #endif
