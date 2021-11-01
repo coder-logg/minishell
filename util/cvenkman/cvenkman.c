@@ -6,18 +6,21 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 17:05:25 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/25 17:05:28 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/01 12:22:23 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int cmd_splited_len(char **cmd)
+void free_arr(char **arr)
 {
-	int	len;
+	int	i;
 
-	len = 0;
-	while (cmd[len])
-		len++;
-	return (len);
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }

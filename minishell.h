@@ -49,7 +49,7 @@ struct s_minish
 {
 	char	*line;
 	char	**env;
-	t_list	*env_lst;
+	// t_list	*env_lst;
 	t_list	*cmdlst;
 };
 
@@ -59,8 +59,9 @@ void	set_free(void **var, void *new);
 t_list	*create_node(char *cmd, char **cmd_splited);
 void	destroy_node(void *content);
 
-// util/cvenkman.c
-int cmd_splited_len(char **cmd);
+// util/cvenkman/cvenkman.c
+void	free_arr(char **arr);
+	// char	**get_env_from_list(t_env *env_list)
 
 // util/errors.c
 int		cmd_not_found(char *cmd, char *str);
@@ -87,6 +88,9 @@ int		get_envi(char **env, const char *key);
 int		ft_exit(char **cmd);
 
 // builtins/export
-int		ft_export(char **cmd_splited, char **env);
+int		ft_export(char **cmd_splited, char **env, t_minish *minish);
 void	print_export(char **export);
+
+
+
 #endif
