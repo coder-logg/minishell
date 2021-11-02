@@ -97,3 +97,9 @@ char	*skip_untill_chr(char *str, char chr)
 		i++;
 	return (str + i);
 }
+
+char  *substr_till_chr(char *str, char chr, int start)
+{
+	return
+	(ft_substr(str, start, skip_untill_chr(str + start, chr) - (str + start)));
+}

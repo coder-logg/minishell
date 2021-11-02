@@ -7,25 +7,28 @@
  */
 int	get_envi(char **env, const char *key)
 {
-	int	key_len;
-	int	i;
-	int arr_size;
+	int		key_len;
+	int		i;
+	int		arr_size;
+	char	flag;
 
-	i = 0;
+	i = -1;
 	key_len = ft_strlen(key);
 	arr_size = arr_len(env);
+	flag = 0;
 	if (!ft_strchr(key, '='))
 	{
+		flag = 1;
 		key = ft_strjoin(key, "=");
-		key_len++;
 	}
-	while (i < arr_size)
-	{
-		if (ft_strnstr(env[i], key, key_len))
-			return (i);
-		i++;
-	}
-	return (-1);
+	while (++i < arr_size)
+		if (ft_strnstr(env[i], key, key_len + flag))
+			break ;
+	if (flag)
+		free((void *)key);
+	if (i == arr_size)
+		i = -1;
+	return (i);
 }
 
 static bool is_env_chr(char c)
@@ -96,11 +99,13 @@ int read_env(char **str, int pos, char **env)
 	if (env_val)
 	{
 		set_free((void **)str, replace_subst(*str, env_name, env_val, pos));
+		free(env_val);
 		return (pos + ft_strlen(env_val));
 	}
 	else
 	{
 		set_free((void **)str, replace_subst(*str, env_name, "", pos));
+		free(env_val);
 		return (pos + 1);
 	}
 }
