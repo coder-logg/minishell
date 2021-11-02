@@ -6,12 +6,15 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 15:21:52 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/02 04:24:57 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/03 02:18:30 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/**
+**	@brief	write cmd: str: "not a valid identifier" in 2 fd
+*/
 void	not_valid_export(char *cmd, char *str)
 {
 	write(2, "bash: ", 6);
@@ -24,72 +27,38 @@ void	not_valid_export(char *cmd, char *str)
 	write(2, "not a valid identifier\n", 24);
 }
 
-static int check_same_key(char *str, char **env)
+/**
+**	@brief	return env key length (until =)
+*/
+int ft_env_key_len(char *env)
 {
 	int	i;
-	int	key_len;
 	int	env_key_len;
 
 	i = 0;
-	key_len = 0;
-	while (str[key_len] != '\0' && str[key_len] != '=')
-		key_len++;
-	while (env[i])
-	{
-		if (!ft_strcmp(str, env[i]))
-			return (2);
-		env_key_len = 0;
-		while (env[i][env_key_len] != '\0' && env[i][env_key_len] != '=')
-			env_key_len++;
-		if (env_key_len == key_len)
-			if (!ft_strncmp(str, env[i], key_len))
-				return (SAME_KEY);
-		i++;
-	}
-	return (ALL_GOOD);
+	env_key_len = 0;
+	while (env[env_key_len] != '\0' && env[env_key_len] != '=')
+		env_key_len++;
+	return (env_key_len);
 }
 
-int	check_valid(char *str, int *ret, char **env)
-{
-	int	i;
-
-	i = 0;
-	if (str[0] == '=')
-		return (NOT_VALID);
-	if (!ft_strncmp(str, "_=", 2))
-		return (2);
-	i = 0;
-	while (str[i] != '\0' && str[i] != '=')
-	{
-		if (!ft_isalpha(str[i]) && str[i] != '_')
-		{
-			if (ret != NULL)
-				*ret = 1;
-			return (NOT_VALID);
-		}
-		i++;
-	}
-	return (check_same_key(str, env));
-}
-
-int	valid_export_len(char **cmd_splited, char **env)
-{
-	int		i;
-	int		valid_export;
-
-	i = 1;
-	valid_export = 0;
-	while (cmd_splited[i])
-	{
-		if (check_valid(cmd_splited[i], NULL, env) == ALL_GOOD)
-			valid_export++;
-		i++;
-	}
-	return (valid_export);
-}
-
+/**
+**	@brief	return NULL and assign 1 to ret
+*/
 void	*return_flag(int *ret)
 {
 	*ret = 1;
 	return (NULL);
+}
+
+/**
+**	@brief	just copy str to export[i] and i++
+**	@return	int	0 if malloc problem, else 1
+*/
+int	copy_str_for_norminette(char *str, char **export, int *i)
+{
+	export[*i] = ft_strdup(str);
+	if (!export[(*i)++])
+		return (0);
+	return (1);
 }

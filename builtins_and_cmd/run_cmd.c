@@ -6,18 +6,23 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 12:37:12 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/02 05:07:22 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/03 01:55:51 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	**get_path(void)
+static char	**get_path(char **env)
 {
 	char	**path;
 	char	*path_str;
+	int		i;
 
-	path_str = getenv("PATH=");
+	i = 0;
+	while (ft_strstr(env[i], "PATH=") == 0)
+		i++;
+	path_str = env[i];
+	path_str += 5;
 	path = ft_split(path_str, ':');
 	if (!path)
 	{
@@ -48,7 +53,7 @@ void	run_cmd(char **cmd, char **env)
 	int		i;
 
 	i = 0;
-	path = get_path();
+	path = get_path(env);
 	while (path[i])
 	{
 		str_path = ft_strjoin(path[i++], "/");

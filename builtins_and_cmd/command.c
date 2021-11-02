@@ -1,5 +1,7 @@
 #include "../minishell.h"
 
+
+
 /**
 **	@brief		run script
 **	@return		int	-1 if ft_stjoin problem, -3 if no such script
@@ -8,7 +10,7 @@ static void run_script(char **cmd, char **env)
 {
 	char	*str_path;
 	char	*str_command;
-	
+
 	if (cmd[0][0] == '/')
 	{
 		execve(cmd[0], cmd, env);

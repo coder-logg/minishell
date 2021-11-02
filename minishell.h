@@ -65,7 +65,6 @@ void	destroy_node(void *content);
 
 // util/cvenkman/cvenkman.c
 void	free_arr(char **arr);
-	// char	**get_env_from_list(t_env *env_list)
 
 // util/errors.c
 int		cmd_not_found(char *cmd, char *str);
@@ -78,28 +77,34 @@ int		arr_len(char **cmd_splited);
 char	**strarr_add(char **arr, size_t arrlen, char *new);
 char	**copystr_array(char **arr);
 
-// builtins
+// builtins_and_cmd
 int		distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe);
-int		builtins(char **cmd, char **env);
+int		builtins_and_cmd(char **cmd, char **env);
 int		ft_pwd(char **cmd_splited);
 int		ft_env(char **cmd_splited, char **env);
 void	ft_command(char **cmd, char **env);
-void		run_cmd(char **cmd, char **env);
+void	run_cmd(char **cmd, char **env);
 void	ft_pipes(t_minish *minish, char **env);
 int		echo(char **cmd_splited);
 int		cd(char **cmd_splited, char **env);
 int		get_envi(char **env, const char *key);
 int		ft_exit(char **cmd);
 
-// builtins/export_and_unset
+// builtins_and_cmd/export_and_unset
 int		ft_export(char **cmd_splited, char **env, t_minish *minish);
 void	print_export(char **export);
 int		unset(char **cmd_splited, char **env, t_minish *minish);
 
-// builtins/export_and_unset/export_utils.c
+// builtins_and_cmd/export_and_unset/export_utils.c
 void	not_valid_export(char *cmd, char *str);
+void	*return_flag(int *ret);
+int		copy_str_for_norminette(char *str, char **export, int *i);
+
+// builtins_and_cmd/export_and_unset/check_valid.c
 int		check_valid(char *str, int *ret, char **env);
 int		valid_export_len(char **cmd_splited, char **env);
-void	*return_flag(int *ret);
+int		all_not_valid(char **cmd_splited, char **env);
+
+int ft_env_key_len(char *env);
 
 #endif

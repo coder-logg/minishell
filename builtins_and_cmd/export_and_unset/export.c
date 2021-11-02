@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 16:28:32 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/02 04:24:10 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/03 02:28:45 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ static void	sort_env(char **export, int len)
 	}
 }
 
+/**
+**	@brief	sort and print export
+**	@return	int	1 if malloc problem, else 0
+*/
 static int	just_export(char **env)
 {
 	int		i;
@@ -61,41 +65,39 @@ static int	just_export(char **env)
 	return (0);
 }
 
-int	copy_same_key(char *str, char **export)
+/**
+**	@brief		copy str to export with same key
+*/
+static void	copy_same_key(char *str, char **export)
 {
-	int	y;
+	int	i;
 	int	key_len;
 	int	env_key_len;
 
-	y = 0;
+	i = 0;
 	key_len = 0;
 	while (str[key_len] != '=')
 		key_len++;
-	while (export[y])
+	while (export[i])
 	{
-		env_key_len = 0;
-		while(export[y][env_key_len] != '\0' && export[y][env_key_len] != '=')
-			env_key_len++;
+		env_key_len = ft_env_key_len(export[i]);
 		if (env_key_len == key_len)
-			if (ft_strncmp(str, export[y], key_len) == 0)
+			if (ft_strncmp(str, export[i], key_len) == 0)
 			{
-				free(export[y]);
-				export[y] = ft_strdup(str);
+				free(export[i]);
+				export[i] = ft_strdup(str);
 				break ;
 			}
-		y++;
+		i++;
 	}
-	return (1);
 }
 
-int	copy_str_for_norminette(char *str, char **export, int *i)
-{
-	export[*i] = ft_strdup(str);
-	if (!export[(*i)++])
-		return (0);
-	return (1);
-}
-
+/**
+**	@brief			copy env to export & add new to env and export
+**	@param	ret		return int for status
+**	@param	export	empty export
+**	@return	char**	export
+*/
 static char	**add_export(char **cmd_splited, char **env,
 							int *ret, char **export)
 {
@@ -120,29 +122,6 @@ static char	**add_export(char **cmd_splited, char **env,
 	}
 	export[i] = NULL;
 	return (export);
-}
-
-int	all_not_valid(char **cmd_splited, char **env)
-{
-	int	not_valid;
-	int		i;
-
-	i = 1;
-	not_valid = 0;
-	while (cmd_splited[i])
-	{
-		if (check_valid(cmd_splited[i], NULL, env) == NOT_VALID)
-		{
-			not_valid_export("export", cmd_splited[i]);
-			not_valid++;
-		}
-		else if (check_valid(cmd_splited[i], NULL, env) == 2)
-			not_valid++;
-		i++;
-	}
-	if (not_valid != (arr_len(cmd_splited) - 1))
-		return (1);
-	return (0);
 }
 
 int	ft_export(char **cmd_splited, char **env, t_minish *minish)

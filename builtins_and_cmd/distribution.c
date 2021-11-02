@@ -1,5 +1,11 @@
 #include "../minishell.h"
 
+static int	help(t_minish *minish)
+{
+	ft_pipes(minish, minish->env);
+	return (2);
+}
+
 /**
 **	@brief			distributes commands and builtins by function
 **	@param	cmd		splited command
@@ -9,10 +15,7 @@
 int	distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe)
 {
 	if (flag_is_pipe == false && minish->cmdlst->next)
-	{
-		ft_pipes(minish, env);
-		return (2);
-	}
+		return (help(minish));
 	if (!ft_strcmp(cmd[0], "pwd") || !ft_strcmp(cmd[0], "PWD"))
 		g_status = ft_pwd(cmd);
 	else if (!ft_strcmp(cmd[0], "env") || !ft_strcmp(cmd[0], "ENV"))
