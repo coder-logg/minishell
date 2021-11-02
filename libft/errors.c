@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/19 19:02:31 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/21 16:57:34 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/02 04:50:14 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,21 @@ void	perror_return(char *str)
 		perror(str);
 	else
 		perror(NULL);
+}
+
+/**
+**	@brief	executes the perror
+**	
+**	@param	str		display error
+**	@return	int		1
+*/
+int	perror_return_number(char *str)
+{
+	if (str)
+		perror(str);
+	else
+		perror(NULL);
+	return (1);
 }
 
 /**

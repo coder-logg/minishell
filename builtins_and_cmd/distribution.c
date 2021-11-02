@@ -27,7 +27,6 @@ int	distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe)
 		g_status = unset(cmd, minish->env, minish);
 	else if (!ft_strcmp(cmd[0], "exit"))
 		g_status = ft_exit(cmd);
-	// else if ...
 	else
 	{
 		if (flag_is_pipe == false)
