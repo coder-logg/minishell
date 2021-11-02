@@ -97,7 +97,7 @@ void	print_export(char **export);
 int		unset(char **cmd_splited, char **env, t_minish *minish);
 
 // builtins/export_and_unset/export_utils.c
-void	not_valid_export(char *cmd);
+void	not_valid_export(char *cmd, char *str);
 int		check_valid(char *str, int *ret, char **env);
 int		valid_export_len(char **cmd_splited, char **env);
 void	*return_flag(int *ret);

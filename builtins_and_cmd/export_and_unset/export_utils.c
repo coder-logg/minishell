@@ -6,39 +6,44 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 15:21:52 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/01 20:29:39 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/02 04:24:57 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	not_valid_export(char *cmd)
+void	not_valid_export(char *cmd, char *str)
 {
 	write(2, "bash: ", 6);
-	write(2, "`", 1);
 	write(2, cmd, ft_strlen(cmd));
+	write(2, ": ", 2);
+	write(2, "`", 1);
+	write(2, str, ft_strlen(str));
 	write(2, "'", 1);
 	write(2, ": ", 2);
 	write(2, "not a valid identifier\n", 24);
 }
 
-int foo(char *str, char **env)
+static int check_same_key(char *str, char **env)
 {
 	int	i;
 	int	key_len;
+	int	env_key_len;
 
 	i = 0;
 	key_len = 0;
 	while (str[key_len] != '\0' && str[key_len] != '=')
-	{
 		key_len++;
-	}
 	while (env[i])
 	{
 		if (!ft_strcmp(str, env[i]))
 			return (2);
-		if (!ft_strncmp(str, env[i], key_len))
-			return (SAME_KEY);
+		env_key_len = 0;
+		while (env[i][env_key_len] != '\0' && env[i][env_key_len] != '=')
+			env_key_len++;
+		if (env_key_len == key_len)
+			if (!ft_strncmp(str, env[i], key_len))
+				return (SAME_KEY);
 		i++;
 	}
 	return (ALL_GOOD);
@@ -51,10 +56,12 @@ int	check_valid(char *str, int *ret, char **env)
 	i = 0;
 	if (str[0] == '=')
 		return (NOT_VALID);
+	if (!ft_strncmp(str, "_=", 2))
+		return (2);
 	i = 0;
-	while (str[i])
+	while (str[i] != '\0' && str[i] != '=')
 	{
-		if (!ft_isalpha(str[i]) && str[i] != '=' && str[i] != '_')
+		if (!ft_isalpha(str[i]) && str[i] != '_')
 		{
 			if (ret != NULL)
 				*ret = 1;
@@ -62,23 +69,23 @@ int	check_valid(char *str, int *ret, char **env)
 		}
 		i++;
 	}
-	return (foo(str, env));
+	return (check_same_key(str, env));
 }
 
 int	valid_export_len(char **cmd_splited, char **env)
 {
 	int		i;
-	int		k;
+	int		valid_export;
 
 	i = 1;
-	k = 0;
+	valid_export = 0;
 	while (cmd_splited[i])
 	{
 		if (check_valid(cmd_splited[i], NULL, env) == ALL_GOOD)
-			k++;
+			valid_export++;
 		i++;
 	}
-	return (k);
+	return (valid_export);
 }
 
 void	*return_flag(int *ret)
