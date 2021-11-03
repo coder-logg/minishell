@@ -1,0 +1,30 @@
+Makefile
+README.md
+_for_test
+builtins_and_cmd
+file
+libft
+main.c
+main.o
+minishell
+minishell.h
+parser
+tets
+util
+total 136
+drwxr-xr-x   16 cvenkman  4221    544 Nov  4 00:06 .
+drwxr-xr-x   77 cvenkman  4221   2686 Nov  4 00:06 ..
+drwxr-xr-x   14 cvenkman  4221    476 Nov  3 21:12 .git
+-rw-r--r--    1 cvenkman  4221    967 Nov  3 21:12 Makefile
+-rw-r--r--    1 cvenkman  4221   4515 Nov  2 21:26 README.md
+drwxr-xr-x    3 cvenkman  4221    102 Nov  2 21:26 _for_test
+drwxr-xr-x   21 cvenkman  4221    714 Nov  4 00:06 builtins_and_cmd
+-rw-r--r--    1 cvenkman  4221    110 Nov  4 00:06 file
+drwxr-xr-x  105 cvenkman  4221   3570 Nov  3 21:12 libft
+-rw-r--r--    1 cvenkman  4221    635 Nov  3 21:12 main.c
+-rw-r--r--    1 cvenkman  4221   1232 Nov  3 21:12 main.o
+-rwxr-xr-x    1 cvenkman  4221  39172 Nov  4 00:06 minishell
+-rw-r--r--    1 cvenkman  4221   2751 Nov  4 00:02 minishell.h
+drwxr-xr-x   11 cvenkman  4221    374 Nov  3 21:12 parser
+drwxr-xr-x    5 cvenkman  4221    170 Nov  3 21:32 tets
+drwxr-xr-x    9 cvenkman  4221    306 Nov  3 21:12 util

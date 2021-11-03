@@ -82,13 +82,16 @@ int		distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe);
 int		builtins_and_cmd(char **cmd, char **env);
 int		ft_pwd(char **cmd_splited);
 int		ft_env(char **cmd_splited, char **env);
-int		ft_command(char **cmd, char **env);
 int		run_cmd(char **cmd, char **env);
 void	ft_pipes(t_minish *minish, char **env);
 int		echo(char **cmd_splited);
 int		cd(char **cmd_splited, char **env);
 int		get_envi(char **env, const char *key);
 int		ft_exit(char **cmd);
+
+// builtins_and_cmd/command.c
+void	change_fd_if_redirect(int redirect_fds[2]);
+int		ft_command(char **cmd, char **env, t_minish *minish);
 
 // builtins_and_cmd/export_and_unset
 int		ft_export(char **cmd_splited, char **env, t_minish *minish);

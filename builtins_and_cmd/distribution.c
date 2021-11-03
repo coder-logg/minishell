@@ -33,7 +33,7 @@ int	distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe)
 	else
 	{
 		if (flag_is_pipe == false)
-			ft_command(cmd, minish->env);
+			ft_command(cmd, minish->env, minish);
 		return (0);
 	}
 	return (1);
