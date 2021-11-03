@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 18:01:02 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/03 01:42:13 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/03 15:48:54 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int	ft_exit(char **cmd_splited)
 	if (arr_len(cmd_splited) == 1)
 		exit(g_status);
 	check_valid_status(cmd_splited[1]);
-	g_status = atoi_overflow(cmd_splited[1]) & 255;
-	printf("!!!!!!!!!!   %d\n", g_status);
-	exit(atoi_overflow(cmd_splited[1]) & 255);
+	exit(23);
+	// exit(atoi_overflow(cmd_splited[1]) & 255);
 	// return (atoi_overflow(cmd_splited[1]) & 255);
 }

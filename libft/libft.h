@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 18:43:54 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/02 04:50:29 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/03 15:26:31 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		ft_toupper(int sym);
 int		ft_tolower(int sym);
 int		ft_strcmp(char const *str1, char const *str2);
 int		ft_memcmp(void const *str1, void const *str2, size_t n);
-int		perror_return_number(char *str);
+int		perror_return_number(char *str, int num);
 void	*ft_memchr(const void *str, int sym, size_t n);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	*ft_memset(void *str, int sym, size_t n);

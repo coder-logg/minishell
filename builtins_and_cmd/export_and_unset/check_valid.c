@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 01:59:43 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/03 02:18:47 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/03 13:02:36 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ int	check_valid(char *str, int *ret, char **env)
 	int	i;
 
 	i = 0;
-	if (str[0] == '=')
+	if (str[0] == '=' || ft_isdigit(str[0]))
 		return (NOT_VALID);
 	if (!ft_strncmp(str, "_=", 2))
 		return (2);
 	i = 0;
 	while (str[i] != '\0' && str[i] != '=')
 	{
-		if (!ft_isalpha(str[i]) && str[i] != '_')
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 		{
 			if (ret != NULL)
 				*ret = 1;

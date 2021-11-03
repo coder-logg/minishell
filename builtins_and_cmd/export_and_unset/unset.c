@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 21:44:46 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/03 02:26:51 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/03 13:28:07 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ static int	check_valid_unset(char *str)
 	int i;
 
 	i = 0;
+	if (ft_isdigit(str[0]))
+		return (0);
 	while(str[i])
 	{
-		if (!ft_isalpha(str[i]) && str[i] != '_')
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (0);
 		i++;
 	}
