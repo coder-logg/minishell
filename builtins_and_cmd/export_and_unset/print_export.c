@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 23:18:14 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/27 23:19:14 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/02 04:03:59 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,14 @@ void	print_export(char **export)
 	i = 0;
 	while (export[i])
 	{
-		ft_putstr_fd("declare -x ", 1);
-		if (ft_strchr(export[i], '='))
-			putstr_in_export(export[i]);
-		else
-			ft_putendl_fd(export[i], 1);
+		if (ft_strncmp(export[i], "_=", 2) != 0)
+		{
+			ft_putstr_fd("declare -x ", 1);
+			if (ft_strchr(export[i], '='))
+				putstr_in_export(export[i]);
+			else
+				ft_putendl_fd(export[i], 1);
+		}
 		i++;
 	}
 }

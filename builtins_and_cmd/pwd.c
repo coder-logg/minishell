@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 17:10:01 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/10/25 21:11:38 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/01 12:27:08 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int ft_pwd(char **cmd_splited)
 	pwd = ft_calloc(5000, 1);
 	if (!pwd)
 		return (1);
-	if (cmd_splited_len(cmd_splited) > 1)
+	if (arr_len(cmd_splited) > 1)
 		return (error_builtin(cmd_splited[0]));
 	if (getcwd(pwd, 5000) == NULL)
 	{
