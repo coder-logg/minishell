@@ -57,7 +57,7 @@ static void	process(char **env, t_list *elem, int next_fd_in, t_minish *minish)
 			close(next_fd_in);
 		if (dup2(((t_cmd *)elem->content)->fd_out, STDOUT_FILENO) == -1)
 			perror_exit("dup2");
-		if (distribution(minish, ((t_cmd *)elem->content)->cmd_splited, env, true))
+		if (distribution(minish, ((t_cmd *) elem->content)->cmd_splited, true))
 			exit (0);
 		if (dup2(((t_cmd *)elem->content)->fd_in, STDIN_FILENO) == -1)
 			perror_exit("dup2");

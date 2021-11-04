@@ -16,7 +16,7 @@ char	**strarr_add(char **arr, size_t arrlen, char *new)
 {
 	char	**new_arr;
 
-	new_arr = (char	**)check_malloc(ft_calloc(arrlen + 2, sizeof(char *)));
+	new_arr = (char	**)chmllc(ft_calloc(arrlen + 2, sizeof(char *)));
 	if (!new_arr || !new)
 		return (NULL);
 	if (arrlen >= 1 && arr)
@@ -36,7 +36,7 @@ char	**copystr_array(char **arr)
 
 	arrlen = arr_len(arr);
 	i = -1;
-	res = check_malloc(ft_calloc(arrlen + 1, sizeof(char *)));
+	res = chmllc(ft_calloc(arrlen + 1, sizeof(char *)));
 	res[arrlen] = NULL;
 	while (++i < arrlen)
 		res[i] = ft_strdup(arr[i]);

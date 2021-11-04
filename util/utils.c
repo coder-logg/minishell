@@ -1,9 +1,12 @@
 #include "../minishell.h"
 
-void	*check_malloc(void *ptr)
+void	*chmllc(void *ptr)
 {
 	if (ptr == NULL)
+	{
 		ft_putstr_fd("malloc error\n", 2);
+		exit(MALLOC_ERROR);
+	}
 	return (ptr);
 }
 
@@ -11,14 +14,12 @@ t_list	*create_node(char *cmd, char **cmd_splited)
 {
 	t_cmd	*elem;
 
-	elem = check_malloc(ft_calloc(1, sizeof(t_cmd)));
-	if (!elem)
-		return (NULL);
+	elem = chmllc(ft_calloc(1, sizeof(t_cmd)));
 	elem->cmd = cmd;
 	elem->cmd_splited = cmd_splited;
 	elem->rd_fds[0] = -1;
 	elem->rd_fds[1] = -1;
-	return (check_malloc(ft_lstnew(elem)));
+	return (chmllc(ft_lstnew(elem)));
 }
 
 void destroy_node(void *content)

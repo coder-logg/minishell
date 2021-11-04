@@ -58,3 +58,21 @@ void	perror_exit_bash(char *str)
 		perror(NULL);
 	exit(errno);
 }
+
+int print_sintaxerr(char err_chr)
+{
+	char	ch_str[2];
+
+	ch_str[1] = 0;
+	g_status = SYNTAX_ERROR;
+	ft_putstr_fd("bash: syntax error near unexpected token '", 2);
+	if (!err_chr)
+		ft_putstr_fd("newline'\n", 2);
+	else
+	{
+		ch_str[0] = err_chr;
+		ft_putstr_fd(ch_str, 2);
+		ft_putstr_fd("'\n", 2);
+	}
+	return (-1);
+}

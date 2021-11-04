@@ -37,7 +37,7 @@ char	*ft_strchrs(const char *str, const char *chrs)
  * @return new string in which first found <b><i>substr</i></b> will be
  * replaced with <b><i>replacement</i></b> or <b><i>str</i></b> if wasn't found
  */
-char	*replace_subst(char *str, char *substr, char *replacement, int pos)
+char	*replace_substr(char *str, char *substr, char *replacement, int pos)
 {
 	char	*res;
 	char	*place;
@@ -47,9 +47,7 @@ char	*replace_subst(char *str, char *substr, char *replacement, int pos)
 	if (place == NULL)
 		return (str);
 	len = ft_strlen(str) - ft_strlen(substr) + ft_strlen(replacement);
-	res = check_malloc(ft_calloc(len + 1, sizeof(char)));
-	if (!res)
-		return (NULL);
+	res = chmllc(ft_calloc(len + 1, sizeof(char)));
 	len = place - str;
 	ft_strlcpy(res, str, len + 1);
 	ft_strcpy(res + len, replacement);
@@ -81,9 +79,9 @@ char	*shrink_chs_one(char *str, int pos, char ch)
 		i++;
 	if (i == 0 || i == 1)
 		return (str);
-	to_collapse = check_malloc(ft_calloc(i + 1, sizeof(char)));
+	to_collapse = chmllc(ft_calloc(i + 1, sizeof(char)));
 	ft_strlcpy(to_collapse, str + pos, i + 1);
-	res = replace_subst(str, to_collapse, ch_str, pos);
+	res = replace_substr(str, to_collapse, ch_str, pos);
 	free(to_collapse);
 	return (res);
 }

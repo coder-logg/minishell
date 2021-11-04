@@ -18,11 +18,6 @@ int heredoc(const char *stop_w, char **env, const int *fd)
 		{
 			if (buf[i] == '$')
 				i = read_env(&buf, i, env);
-//			if (i < 0)
-//			{
-////				g_status =
-//				return (-1);
-//			}
 		}
 		write(fd[1], buf, ft_strlen(buf));
 		write(fd[1], "\n", 1);
@@ -60,6 +55,7 @@ int parse_file_name(char **cmd, int fname_start, char **dst)
 		buf = ft_substr(*cmd, fname_start, buf - (*cmd + fname_start));
 	else
 		buf = ft_substr(*cmd, fname_start, ft_strlen(*cmd + fname_start));
+	chmllc(buf);
 	j = -1;
 	res = ft_strlen(buf);
 	while (buf[++j])
@@ -68,20 +64,16 @@ int parse_file_name(char **cmd, int fname_start, char **dst)
 		{
 			ch_str[0] = buf[j];
 			ch_str[1] = 0;
-			set_free((void **)&buf, replace_subst(buf, ch_str, "", j));
-			if (!buf)
-				return (-1);
+			set_free((void **)&buf, replace_substr(buf, ch_str, "", j));
 			j = skip_untill_chr(buf + j, ch_str[0]) - buf;
-			set_free((void **)&buf, replace_subst(buf, ch_str, "", j));
-			if (!buf)
-				return (-1);
+			set_free((void **)&buf, replace_substr(buf, ch_str, "", j));
 		}
 	}
 	*dst = buf;
 	return (res);
 }
 
-int get_oflags(char redirect, bool is_double)
+int	get_oflags(char redirect, bool is_double)
 {
 	int	oflags;
 
@@ -95,10 +87,10 @@ int get_oflags(char redirect, bool is_double)
 	}
 	else
 		oflags = O_RDONLY;
-	return oflags;
+	return (oflags);
 }
 
-int parse_redirect(char **cmd, int i, t_cmd *structure, char **env)
+int	parse_redirect(char **cmd, int i, t_cmd *structure, char **env)
 {
 	bool	is_double;
 	int		index;
@@ -116,8 +108,7 @@ int parse_redirect(char **cmd, int i, t_cmd *structure, char **env)
 	{
 		//todo обрезать по пробелу или редиректу если нет второй кавычки
 		buf = substr_till_chr(*cmd, (*cmd)[fname_start], fname_start + 1);
-		if (!buf)
-			return (-1);
+		chmllc(buf);
 		len = ft_strlen(buf) + 2;
 	}
 	else
@@ -144,13 +135,13 @@ int parse_redirect(char **cmd, int i, t_cmd *structure, char **env)
 				cmd_not_found(buf, strerror(errno));
 		}
 	}
-	set_free((void **)&buf, ft_substr(*cmd, i, len + fname_start - i));
-	set_free((void **)cmd, replace_subst(*cmd, buf, "", i));
+	set_free((void **)&buf, chmllc(ft_substr(*cmd, i, len + fname_start - i)));
+	set_free((void **)cmd, replace_substr(*cmd, buf, "", i));
 	set_free((void **)cmd, shrink_chs_one(*cmd, i - 1, ' '));
 	if (!(*cmd)[i + 1] && (*cmd)[i - 1])
 	{
 		i--;
-		set_free((void **)cmd, ft_strtrim(*cmd, " \t"));
+		set_free((void **)cmd, chmllc(ft_strtrim(*cmd, " \t")));
 	}
 	free(buf);
 	return (i);
