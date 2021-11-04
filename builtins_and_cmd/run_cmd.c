@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 12:37:12 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/04 00:01:36 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/04 05:54:29 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int	run_cmd(char **cmd, char **env)
 
 	i = 0;
 	path = get_path(env);
-	// printf("!! %d  %d\n", ((t_cmd *)minish->cmdlst->content)->rd_fds[0],
-	// 		((t_cmd *)minish->cmdlst->content)->rd_fds[1]);
 	while (path[i])
 	{
 		str_path = ft_strjoin(path[i++], "/");

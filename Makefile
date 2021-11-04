@@ -22,7 +22,7 @@ all: libft/libft.a $(NAME)
 libft/libft.a:
 	@$(LIBFTMAKE)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) minishell.h
 	$(CC) -o $@ $(OBJS) libft/libft.a -lreadline
 
 clean:

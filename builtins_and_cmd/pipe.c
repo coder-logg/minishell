@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 20:18:52 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/04 00:06:21 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/04 05:54:06 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,13 @@ static void wait_all_process(t_list	*head)
 {
 	while (head)
 	{
-		waitpid(((t_cmd *)head->content)->pid, NULL, 0);
+		if (head->next)
+			waitpid(((t_cmd *)head->content)->pid, NULL, 0);
+		else
+		{
+			waitpid(((t_cmd *)head->content)->pid, &g_status, 0);
+			g_status = WEXITSTATUS(g_status);
+		}
 		head = head->next;
 	}
 }
@@ -44,12 +50,12 @@ void close_pipes(t_list	*elem)
 **	@param	elem			struct with command
 **	@param	next_fd_in		fd_in for next command
 */
-static void	process(char **env, t_list *elem, int next_fd_in, t_minish *minish)
+static int	process(char **env, t_list *elem, int next_fd_in, t_minish *minish)
 {
 	next_fd_in = 0;
 	((t_cmd *)elem->content)->pid = fork();
 	if (((t_cmd *)elem->content)->pid < 0)
-		return ;
+		return (0);
 	if (((t_cmd *)elem->content)->pid == 0)
 	{
 		// printf("Какие дескрипторы использует команда %s  %d , %d\n", ((t_cmd *)elem->content)->cmd, ((t_cmd *)elem->content)->fd_out, ((t_cmd *)elem->content)->fd_in);
@@ -64,12 +70,13 @@ static void	process(char **env, t_list *elem, int next_fd_in, t_minish *minish)
 		close_pipes(elem);
 		run_cmd(((t_cmd *)elem->content)->cmd_splited, env);
 	}
+	return (1);
 }
 
 /**
 **	@brief		create pipes for all commands
 */
-void	do_pipes(t_list *elem, char **env, t_minish *minish)
+static int	do_pipes(t_list *elem, char **env, t_minish *minish)
 {
 	int fd[2];
 
@@ -83,11 +90,13 @@ void	do_pipes(t_list *elem, char **env, t_minish *minish)
 		((t_cmd *)elem->content)->fd_out = fd[1];
 		if (elem->next)
 			((t_cmd *)elem->next->content)->fd_in = fd[0];
-		process(env, elem, fd[0], minish);
+		if (!process(env, elem, fd[0], minish))
+			return (0);
 		if (((t_cmd *) elem->content)->fd_out > 2)
 			close(((t_cmd *)elem->content)->fd_out);
 		elem = elem->next;
 	}
+	return (1);
 }
 
 /**
@@ -102,7 +111,8 @@ void	ft_pipes(t_minish *minish, char **env)
 	head = elem;
 	((t_cmd *)elem->content)->fd_out = STDOUT_FILENO;
 	((t_cmd *)elem->content)->fd_in = STDIN_FILENO;
-	do_pipes(elem, env, minish);
+	if (!do_pipes(elem, env, minish))
+		perror_return("fork");
 	elem = head;
 	close_pipes(elem);
 	wait_all_process(head);

@@ -6,25 +6,25 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/23 19:29:09 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/01 12:26:39 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/04 05:55:06 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/**
-**	@brief	check -n after echo
-*/
-static void	check_n(_Bool *flag, char **cmd_splited, int *i)
+static int	check_valid_n(char *str, int *flag)
 {
-	*i = 1;
-	if (arr_len(cmd_splited) > 1 && !ft_strcmp(cmd_splited[1], "-n"))
+	unsigned int i;
+
+	i = 1;
+	while (str[i] == 'n')
+		i++;
+	if (i == ft_strlen(str))
 	{
-		(*i) = 2;
-		*flag = true;
+		*flag = 1;
+		return (i);
 	}
-	else
-		*flag = false;
+	return (0);
 }
 
 /**
@@ -34,9 +34,14 @@ static void	check_n(_Bool *flag, char **cmd_splited, int *i)
 int	echo(char **cmd_splited)
 {
 	int		i;
-	bool	flag;
+	int flag;
 
-	check_n(&flag, cmd_splited, &i);
+	i = 1;
+	flag = 0;
+	if (arr_len(cmd_splited) > 1)
+		if (cmd_splited[1][0] == '-' && cmd_splited[1][1] == 'n')
+			while (cmd_splited[i] && check_valid_n(cmd_splited[i], &flag))
+				i++;
 	while (cmd_splited[i])
 	{
 		ft_putstr_fd(cmd_splited[i], 1);
@@ -44,7 +49,7 @@ int	echo(char **cmd_splited)
 		if (cmd_splited[i] != NULL)
 			write (1, " ", 1);
 	}
-	if (flag == false)
+	if (flag == 0)
 		write (1, "\n", 1);
 	return (0);
 }

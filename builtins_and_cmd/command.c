@@ -68,6 +68,7 @@ int	ft_command(char **cmd, char **env, t_minish *minish)
 	else if (pid == 0)
 		ret = script_or_file(cmd, env, minish);
 	if (pid > 0)
-		wait(&pid);
+		waitpid(pid, &g_status, 0);
+	g_status = WEXITSTATUS(g_status);
 	return (ret);
 }
