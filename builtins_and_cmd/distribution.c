@@ -9,10 +9,9 @@ static int	help(t_minish *minish)
 /**
 **	@brief			distributes commands and builtins by function
 **	@param	cmd		splited command
-**	@param	env		environment
 **	@return	int		1 if it is builtin, 0 if not
 */
-int	distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe)
+int distribution(t_minish *minish, char **cmd, bool flag_is_pipe)
 {
 	if (flag_is_pipe == false && minish->cmdlst->next)
 		return (help(minish));
@@ -21,7 +20,7 @@ int	distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe)
 	else if (!ft_strcmp(cmd[0], "env") || !ft_strcmp(cmd[0], "ENV"))
 		g_status = ft_env(cmd, minish->env);
 	else if (!ft_strcmp(cmd[0], "cd"))
-		g_status = cd(cmd, env);
+		g_status = cd(cmd, minish->env);
 	else if (!ft_strcmp(cmd[0], "echo") || !ft_strcmp(cmd[0], "ECHO"))
 		g_status = echo(cmd);
 	else if (!ft_strcmp(cmd[0], "export"))

@@ -24,6 +24,7 @@ typedef struct s_cmd	t_cmd;
 # define CMD_NOT_FOUND 127
 # define CMD_CAN_NOT_EXEC 126
 # define SYNTAX_ERROR 258
+# define MALLOC_ERROR 333
 # define RS	"\x1b[0m"
 # define X  "\x1b[36m"
 
@@ -58,7 +59,7 @@ struct s_minish
 };
 
 // util/utils.c
-void	*check_malloc(void *ptr);
+void	*chmllc(void *ptr);
 void	set_free(void **var, void *new);
 t_list	*create_node(char *cmd, char **cmd_splited);
 void	destroy_node(void *content);
@@ -71,6 +72,7 @@ int		cmd_not_found(char *cmd, char *str);
 int		error_builtin(char *str);
 int		command_exit(char *cmd, char *str, int exit_code);
 void	perror_exit_bash(char *str);
+int		print_sintaxerr(char err_chr);
 
 // util/strarr_utils.c
 int		arr_len(char **cmd_splited);
@@ -78,7 +80,7 @@ char	**strarr_add(char **arr, size_t arrlen, char *new);
 char	**copystr_array(char **arr);
 
 // builtins_and_cmd
-int		distribution(t_minish *minish, char **cmd, char **env, bool flag_is_pipe);
+int		distribution(t_minish *minish, char **cmd, bool flag_is_pipe);
 int		builtins_and_cmd(char **cmd, char **env);
 int		ft_pwd(char **cmd_splited);
 int		ft_env(char **cmd_splited, char **env);
@@ -108,6 +110,7 @@ int		check_valid(char *str, int *ret, char **env);
 int		valid_export_len(char **cmd_splited, char **env);
 int		all_not_valid(char **cmd_splited, char **env);
 
-int ft_env_key_len(char *env);
+int		ft_env_key_len(char *env);
+
 
 #endif

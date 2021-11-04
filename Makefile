@@ -1,6 +1,6 @@
 NAME	=	minishell
 
-PARSER	=	$(addprefix parser/, parser.c string.c read_env.c parse_redirect.c)
+PARSER	=	$(addprefix parser/, parser.c string.c read_env.c parse_redirect.c string_builder.c)
 BUILTIN	=	$(addprefix builtins_and_cmd/, env.c pwd.c run_cmd.c distribution.c cd.c \
 			command.c pipe.c echo.c export_and_unset/export.c export_and_unset/print_export.c exit.c \
 			export_and_unset/export_utils.c export_and_unset/unset.c export_and_unset/check_valid.c)

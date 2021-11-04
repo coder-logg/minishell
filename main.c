@@ -22,9 +22,10 @@ int	main(int argc, char **argv, char **env)
 			minish.line = NULL;
 			continue;
 		}
-		parser(&minish);
-		if (minish.line[0])
-			distribution(&minish, ((t_cmd *)minish.cmdlst->content)->cmd_splited, minish.env, false);
+		if (!parser(&minish) && minish.line[0] && ((t_cmd *)minish.cmdlst->content)->cmd_splited)
+			distribution(&minish,
+						 ((t_cmd *) minish.cmdlst->content)->cmd_splited,
+						 false);
 		ft_lstclear(&minish.cmdlst, &destroy_node);
 		free(minish.line);
 		minish.line = NULL;
