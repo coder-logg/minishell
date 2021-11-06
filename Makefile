@@ -7,7 +7,7 @@ BUILTIN	=	$(addprefix builtins_and_cmd/, env.c pwd.c run_cmd.c distribution.c cd
 
 SRCS	=	${PARSER} ${BUILTIN} main.c\
 			util/errors.c	util/utils.c	util/strarr_utils.c\
-			util/cvenkman/cvenkman.c
+			util/cvenkman/cvenkman.c		util/cvenkman/change_shell_lvl.c
 
 OBJS		=	$(SRCS:.c=.o)
 FLAGS		=	-Wall -Wextra -Werror
