@@ -11,6 +11,7 @@ int	main(int argc, char **argv, char **env)
 //	rl_outstream = stderr;
 	minish.cmdlst = NULL;
 	minish.env = copystr_array(env);
+	change_shell_lvl(&minish);
 	while (1)
 	{
 		minish.line = readline("minishell$> ");
@@ -23,9 +24,7 @@ int	main(int argc, char **argv, char **env)
 			continue;
 		}
 		if (!parser(&minish) && minish.line[0] && ((t_cmd *)minish.cmdlst->content)->cmd_splited)
-			distribution(&minish,
-						 ((t_cmd *) minish.cmdlst->content)->cmd_splited,
-						 false);
+			distribution(&minish, ((t_cmd *) minish.cmdlst->content)->cmd_splited, false);
 		ft_lstclear(&minish.cmdlst, &destroy_node);
 		free(minish.line);
 		minish.line = NULL;

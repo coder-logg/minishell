@@ -63,7 +63,7 @@ static int	process(char **env, t_list *elem, int next_fd_in, t_minish *minish)
 			close(next_fd_in);
 		if (dup2(((t_cmd *)elem->content)->fd_out, STDOUT_FILENO) == -1)
 			perror_exit("dup2");
-		if (distribution(minish, ((t_cmd *) elem->content)->cmd_splited, true))
+		if (distribution(minish, ((t_cmd *)elem->content)->cmd_splited, true))
 			exit (0);
 		if (dup2(((t_cmd *)elem->content)->fd_in, STDIN_FILENO) == -1)
 			perror_exit("dup2");
@@ -86,6 +86,13 @@ static int	do_pipes(t_list *elem, char **env, t_minish *minish)
 		fd[1] = STDOUT_FILENO;
 		if (elem->next)
 			pipe(fd);
+		if (((t_cmd *)elem->content)->rd_fds[0] != -1)
+			fd[0] = ((t_cmd *)elem->content)->rd_fds[0];
+		if (((t_cmd *)elem->content)->rd_fds[1] != -1)
+		{
+			close(fd[1]);
+			fd[1] = ((t_cmd *)elem->content)->rd_fds[1];
+		}
 		// printf("%s   fd0 %d  fd1 %d\n", ((t_cmd *)elem->content)->cmd, fd[0], fd[1]);
 		((t_cmd *)elem->content)->fd_out = fd[1];
 		if (elem->next)
@@ -109,8 +116,15 @@ void	ft_pipes(t_minish *minish, char **env)
 
 	elem = minish->cmdlst;
 	head = elem;
+ // printf("!! %s   %d   %d\n", ((t_cmd *)minish->cmdlst->content)->cmd, ((t_cmd *)minish->cmdlst->content)->rd_fds[0],
+ //   ((t_cmd *)minish->cmdlst->content)->rd_fds[1]);
+ // change_fd_if_redirect(((t_cmd *)minish->cmdlst->content)->rd_fds);
 	((t_cmd *)elem->content)->fd_out = STDOUT_FILENO;
 	((t_cmd *)elem->content)->fd_in = STDIN_FILENO;
+	if (((t_cmd *)elem->content)->rd_fds[0] != -1)
+		((t_cmd *)elem->content)->fd_in = ((t_cmd *)elem->content)->rd_fds[0];
+	if (((t_cmd *)elem->content)->rd_fds[1] != -1)
+		((t_cmd *)elem->content)->fd_out = ((t_cmd *)elem->content)->rd_fds[1];
 	if (!do_pipes(elem, env, minish))
 		perror_return("fork");
 	elem = head;
