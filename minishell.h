@@ -17,7 +17,6 @@ typedef struct s_cmd	t_cmd;
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <termios.h>
 # include "libft/libft.h"
 # include "parser/parser.h"
 
@@ -111,6 +110,9 @@ int		valid_export_len(char **cmd_splited, char **env);
 int		all_not_valid(char **cmd_splited, char **env);
 
 int		ft_env_key_len(char *env);
-
+void	main_signals(void);
+void	ctrl_ign(void);
+void	signal_non_interactive(void);
+void	signal_in_forks(void);
 
 #endif

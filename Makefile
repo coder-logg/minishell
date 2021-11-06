@@ -1,7 +1,7 @@
 NAME	=	minishell
 
-PARSER	=	$(addprefix parser/, parser.c string.c read_env.c parse_redirect.c string_builder.c)
-BUILTIN	=	$(addprefix builtins_and_cmd/, env.c pwd.c run_cmd.c distribution.c cd.c \
+PARSER	=	$(addprefix parser/, parser.c string.c read_env.c parse_redirect.c string_builder.c heredoc.c)
+BUILTIN	=	$(addprefix builtins_and_cmd/, env.c pwd.c run_cmd.c distribution.c cd.c signals.c \
 			command.c pipe.c echo.c export_and_unset/export.c export_and_unset/print_export.c exit.c \
 			export_and_unset/export_utils.c export_and_unset/unset.c export_and_unset/check_valid.c)
 
@@ -10,7 +10,7 @@ SRCS	=	${PARSER} ${BUILTIN} main.c\
 			util/cvenkman/cvenkman.c
 
 OBJS		=	$(SRCS:.c=.o)
-FLAGS		=	-Wall -Wextra -Werror
+FLAGS		=	-Wall -Wextra -Werror -I ~/.brew/Cellar/readline/8.1.1/include
 LIBFTMAKE 	=	$(MAKE) -C libft/
 CC			=	gcc
 
@@ -23,14 +23,14 @@ libft/libft.a:
 	@$(LIBFTMAKE)
 
 $(NAME): $(OBJS) minishell.h
-	$(CC) -o $@ $(OBJS) libft/libft.a -lreadline
+	$(CC) -o $@ $(OBJS) libft/libft.a -lreadline -L ~/.brew/Cellar/readline/8.1.1/lib
 
 clean:
 	rm -f  $(OBJS)
 	$(LIBFTMAKE) clean
 
 debug:
-	$(CC) -g -o $(NAME) $(SRCS) libft/*.c -lreadline
+	$(CC) -g -o $(NAME) $(SRCS) libft/*.c -lreadline -I ~/.brew/Cellar/readline/8.1.1/include -L ~/.brew/Cellar/readline/8.1.1/lib
 
 fclean:
 	rm -f $(NAME) $(OBJS)

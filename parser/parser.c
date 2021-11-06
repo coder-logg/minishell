@@ -89,6 +89,8 @@ void	get_cmd_splited(char *cmd, t_cmd *structure, char **env, char ***dst)
 		if (cmd[i] == '<' || cmd[i] == '>')
 		{
 			i = parse_redirect(&cmd, i, structure, env);
+			if (i == -2)
+				return ;
 			continue;
 		}
 		if (cmd[i] == '\"' || cmd[i] == '\'')
@@ -196,6 +198,7 @@ int	parser(t_minish *minish)
 	t_cmd	*cast;
 	int		status;
 
+	signal_non_interactive();
 	if (preparser(&minish->line))
 		return (-1);
 	divide_by_pipe(minish);
@@ -211,5 +214,22 @@ int	parser(t_minish *minish)
 		elem = elem->next;
 	}
 	minish->line = parse_line(minish->line, minish->env);
+	main_signals();
+//	elem = minish->cmdlst;
+//	while (elem)
+//	{
+//		printf("line: %s\n", minish->line);
+//		printf("rd_fds: {%d, %d}\n", ((t_cmd *)elem->content)->rd_fds[0], ((t_cmd *)elem->content)->rd_fds[1]);
+//		printf("{cmd : \"%s\",  ", ((t_cmd *)elem->content)->cmd);
+//		int i = 0;
+//		printf("cmd_splited : {");
+//		while (i < arr_len(((t_cmd *)elem->content)->cmd_splited))
+//		{
+//			printf("\"%s\", ", ((t_cmd *)elem->content)->cmd_splited[i]);
+//			i++;
+//		}
+//		printf("}}\n");
+//		elem = elem->next;
+//	}
 	return (status);
 }

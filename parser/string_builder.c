@@ -4,7 +4,8 @@ char	*chstr(char c)
 {
 	static char chstr[2] = {0, 0};
 
-	chstr[0] = c;
+	if (c >= 0)
+		chstr[0] = c;
 	return (chstr);
 }
 

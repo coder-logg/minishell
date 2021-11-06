@@ -2,6 +2,12 @@
 
 int		g_status;
 
+void	ctrl_d()
+{
+	ft_putstr_fd("exit\n", 1);
+	exit(g_status);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_minish	minish;
@@ -11,9 +17,13 @@ int	main(int argc, char **argv, char **env)
 //	rl_outstream = stderr;
 	minish.cmdlst = NULL;
 	minish.env = copystr_array(env);
+	ctrl_ign();
 	while (1)
 	{
-		minish.line = readline("minishell$> ");
+		main_signals();
+		minish.line = readline("\x1b[32mminishell$>\x1b[0m ");
+		if (minish.line == NULL)
+			ctrl_d();
 		if (minish.line[0])
 			add_history(minish.line);
 		else
