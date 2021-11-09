@@ -35,8 +35,10 @@ int	change_dir(char *path)
 
 	status = chdir(path);
 	if (status)
-		return (cmd_not_found("cd",
-					chmllc(ft_strjoin(path, ": No such file or directory"))));
+	{
+		free(path);
+		return (cmd_not_found("cd", path, ": No such file or directory"));
+	}
 	return (0);
 }
 
@@ -49,7 +51,7 @@ char	*get_path(char **env, char **cmd_splited)
 		index = get_envi(env, "HOME");
 		if (index == -1)
 		{
-			cmd_not_found("cd", "HOME not set");
+			cmd_not_found("cd", "HOME not set", NULL);
 			return (NULL);
 		}
 		return (chmllc(ft_strdup(env[index] + ft_strlen("HOME="))));
@@ -59,7 +61,7 @@ char	*get_path(char **env, char **cmd_splited)
 		index = get_envi(env, "OLDPWD");
 		if (index == -1)
 		{
-			cmd_not_found("cd", "OLDPWD not set");
+			cmd_not_found("cd", "OLDPWD not set", NULL);
 			return (NULL);
 		}
 		else
@@ -81,5 +83,5 @@ int	cd(char **cmd_splited, char **env)
 		update_pwd_oldpwd(env, "PWD");
 		return (0);
 	}
-	return (-1);
+	return (1);
 }

@@ -10,24 +10,13 @@ void ctrl_ign(void)
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &ts);
 }
 
-static void	handle_sigint(int status)
+static void	handle_sigint()
 {
-	(void)status;
 	write(2, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-	g_status = 130;
-}
-
-void print_exit(int i)
-{
-	(void)i;
-	write(1, "yuhi", 3);
-	rl_replace_line("yhiujo", 1);
-	rl_redisplay();
-//	ft_putstr_fd("exit", 1);
-
+	g_status = 1;
 }
 
 void	main_signals(void)
@@ -37,21 +26,19 @@ void	main_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	signal_pipes(int sig)
+void	change_global()
 {
 	signal(SIGINT, SIG_IGN);
-	(void)sig;
+	write(2, "\n", 1);
+	// rl_replace_line("", 0);
+	// rl_on_new_line();
+	// rl_redisplay();
+	g_status = 130;
 }
 
-void	signal_non_interactive(void)
+void	signal_pipes_cmd(void)
 {
-	signal(SIGINT, signal_pipes);
-	signal(SIGQUIT, signal_pipes);
-}
-
-void	signal_in_forks(void)
-{
-	signal(SIGTERM, SIG_DFL);
-	signal(SIGINT, exit);
-	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, change_global);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTERM, SIG_IGN);
 }

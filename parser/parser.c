@@ -198,7 +198,7 @@ int	parser(t_minish *minish)
 	t_cmd	*cast;
 	int		status;
 
-	signal_non_interactive();
+	signal_pipes_cmd();
 	if (preparser(&minish->line))
 		return (-1);
 	divide_by_pipe(minish);
@@ -215,21 +215,47 @@ int	parser(t_minish *minish)
 	}
 	minish->line = parse_line(minish->line, minish->env);
 	main_signals();
-//	elem = minish->cmdlst;
-//	while (elem)
-//	{
-//		printf("line: %s\n", minish->line);
-//		printf("rd_fds: {%d, %d}\n", ((t_cmd *)elem->content)->rd_fds[0], ((t_cmd *)elem->content)->rd_fds[1]);
-//		printf("{cmd : \"%s\",  ", ((t_cmd *)elem->content)->cmd);
-//		int i = 0;
-//		printf("cmd_splited : {");
-//		while (i < arr_len(((t_cmd *)elem->content)->cmd_splited))
-//		{
-//			printf("\"%s\", ", ((t_cmd *)elem->content)->cmd_splited[i]);
-//			i++;
-//		}
-//		printf("}}\n");
-//		elem = elem->next;
-//	}
 	return (status);
 }
+
+
+// static int	preparser2(char **line, bool *flag)
+// {
+// 	set_free((void **)line, chmllc(ft_strtrim(*line, " \t")));
+// 	if (!(*line)[0])
+// 		return (0);
+// 	*flag = false;
+// 	return (-1);
+// }
+
+// static int	preparser(char **line, bool flag, int i)
+// {
+// 	i = preparser2(line, &flag);
+// 	while ((*line)[++i])
+// 	{
+// 		if (((*line)[i] == '>' || (*line)[i] == '<') && (*line)[i] == (*line)[i + 1])
+// 			i++;
+// 		if (is_control_chr((*line)[i]))
+// 		{
+// 			if (flag)
+// 				return (print_sintaxerr((*line)[i]));
+// 			else
+// 				flag = true;
+// 			continue;
+// 		}
+// 		else if ((*line)[i] != ' ' && (*line)[i] != '\t')
+// 			flag = false;
+// 		if ((*line)[i] == '\'' || (*line)[i] == '"')
+// 			i = skip_untill_chr(*line + i + 1, (*line)[i]) - *line;
+// 		else if ((*line)[i] == '\t')
+// 		{
+// 			set_free((void **)line, replace_substr(*line, chstr('\t'), " ", i));
+// 			continue ;
+// 		}
+// 		else if ((*line)[i] == ' ')
+// 			set_free((void **)line, shrink_chs_one(*line, i, ' '));
+// 	}
+// 	if (flag)
+// 		return (print_sintaxerr((*line)[i]));
+// 	return (0);
+// }

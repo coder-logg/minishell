@@ -74,9 +74,9 @@ int get_fd(char redirect, bool is_double, char *buf, char **env)
 		if (res == -1)
 		{
 			if (errno == ENOTDIR)
-				cmd_not_found(buf, "No such file or directory");
+				cmd_not_found(buf, "No such file or directory", NULL);
 			else
-				cmd_not_found(buf, strerror(errno));
+				cmd_not_found(buf, strerror(errno), NULL);
 		}
 	}
 	return (res);

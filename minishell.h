@@ -24,8 +24,6 @@ typedef struct s_cmd	t_cmd;
 # define CMD_CAN_NOT_EXEC 126
 # define SYNTAX_ERROR 258
 # define MALLOC_ERROR 333
-# define RS	"\x1b[0m"
-# define X  "\x1b[36m"
 
 # define ALL_GOOD 400
 # define NOT_VALID 401
@@ -57,6 +55,7 @@ struct s_minish
 	t_list	*cmdlst;
 };
 
+
 // util/utils.c
 void	*chmllc(void *ptr);
 void	set_free(void **var, void *new);
@@ -66,8 +65,11 @@ void	destroy_node(void *content);
 // util/cvenkman/cvenkman.c
 void	free_arr(char **arr);
 
+// util/cvenkman/change_shell_lvl.c
+void change_shell_lvl(t_minish *minish);
+
 // util/errors.c
-int		cmd_not_found(char *cmd, char *str);
+int		cmd_not_found(char *cmd, char *str, char *str2);
 int		error_builtin(char *str);
 int		command_exit(char *cmd, char *str, int exit_code);
 void	perror_exit_bash(char *str);
@@ -87,7 +89,6 @@ int		run_cmd(char **cmd, char **env);
 void	ft_pipes(t_minish *minish, char **env);
 int		echo(char **cmd_splited);
 int		cd(char **cmd_splited, char **env);
-int		get_envi(char **env, const char *key);
 int		ft_exit(char **cmd);
 
 // builtins_and_cmd/command.c
@@ -110,9 +111,11 @@ int		valid_export_len(char **cmd_splited, char **env);
 int		all_not_valid(char **cmd_splited, char **env);
 
 int		ft_env_key_len(char *env);
+
+// parser/read_env
+int		get_envi(char **env, const char *key);
 void	main_signals(void);
 void	ctrl_ign(void);
-void	signal_non_interactive(void);
-void	signal_in_forks(void);
+void	signal_pipes_cmd(void);
 
 #endif

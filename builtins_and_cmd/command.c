@@ -62,6 +62,7 @@ int	ft_command(char **cmd, char **env, t_minish *minish)
 	int		ret;
 
 	ret = 0;
+	signal_pipes_cmd();
 	pid = fork();
 	if (pid < 0)
 		return (perror_return_number("fork", errno));
@@ -69,6 +70,9 @@ int	ft_command(char **cmd, char **env, t_minish *minish)
 		ret = script_or_file(cmd, env, minish);
 	if (pid > 0)
 		waitpid(pid, &g_status, 0);
-	g_status = WEXITSTATUS(g_status);
+	if (g_status == 2)
+		g_status = 130;
+	else
+		g_status = WEXITSTATUS(g_status);
 	return (ret);
 }

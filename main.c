@@ -4,7 +4,7 @@ int		g_status;
 
 void	ctrl_d()
 {
-	ft_putstr_fd("exit\n", 1);
+	write(2, "exit\n", 5);	
 	exit(g_status);
 }
 
@@ -14,9 +14,10 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-//	rl_outstream = stderr;
+	rl_outstream = stderr;
 	minish.cmdlst = NULL;
 	minish.env = copystr_array(env);
+	change_shell_lvl(&minish);
 	ctrl_ign();
 	while (1)
 	{
@@ -30,12 +31,14 @@ int	main(int argc, char **argv, char **env)
 		{
 			free(minish.line);
 			minish.line = NULL;
-			continue;
+			continue ;
 		}
+
 		if (!parser(&minish) && minish.line[0] && ((t_cmd *)minish.cmdlst->content)->cmd_splited)
+		{
 			distribution(&minish,
-						 ((t_cmd *) minish.cmdlst->content)->cmd_splited,
-						 false);
+						 ((t_cmd *) minish.cmdlst->content)->cmd_splited, false);
+		}
 		ft_lstclear(&minish.cmdlst, &destroy_node);
 		free(minish.line);
 		minish.line = NULL;
