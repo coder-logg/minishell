@@ -121,10 +121,6 @@ void	ft_pipes(t_minish *minish, char **env)
 	signal_pipes_cmd();
 	elem = minish->cmdlst;
 	head = elem;
-	// printf("!! %s   %s   %s\n", ((t_cmd *)minish->cmdlst->content)->cmd_splited[0],
-	// 		((t_cmd *)minish->cmdlst->content)->cmd_splited[0], ((t_cmd *)minish->cmdlst->content)->cmd_splited[0])
- //   ((t_cmd *)minish->cmdlst->content)->rd_fds[1]);
- // change_fd_if_redirect(((t_cmd *)minish->cmdlst->content)->rd_fds);
 	((t_cmd *)elem->content)->fd_out = STDOUT_FILENO;
 	((t_cmd *)elem->content)->fd_in = STDIN_FILENO;
 	if (((t_cmd *)elem->content)->rd_fds[0] != -1)

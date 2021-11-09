@@ -22,7 +22,7 @@ int error_builtin(char *str)
 */
 int cmd_not_found(char *cmd, char *str, char *str2)
 {
-	write(2, "bash: ", 6);
+	write(2, "msh: ", 5);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
 	write(2, str, ft_strlen(str));
@@ -43,7 +43,7 @@ int cmd_not_found(char *cmd, char *str, char *str2)
 */
 int command_exit(char *cmd, char *str, int exit_code)
 {
-	write(2, "bash: ", 6);
+	write(2, "msh: ", 5);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
 	write(2, str, ft_strlen(str));
@@ -57,7 +57,7 @@ int command_exit(char *cmd, char *str, int exit_code)
 */
 void	perror_exit_bash(char *str)
 {
-	write(2, "bash: ", 6);
+	write(2, "msh: ", 5);
 	if (str)
 		perror(str);
 	else
@@ -71,7 +71,7 @@ int print_sintaxerr(char err_chr)
 
 	ch_str[1] = 0;
 	g_status = SYNTAX_ERROR;
-	ft_putstr_fd("bash: syntax error near unexpected token '", 2);
+	ft_putstr_fd("msh: syntax error near unexpected token '", 2);
 	if (!err_chr)
 		ft_putstr_fd("newline'\n", 2);
 	else
