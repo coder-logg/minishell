@@ -17,7 +17,6 @@ typedef struct s_cmd	t_cmd;
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <termios.h>
 # include "libft/libft.h"
 # include "parser/parser.h"
 
@@ -56,6 +55,7 @@ struct s_minish
 	t_list	*cmdlst;
 };
 
+
 // util/utils.c
 void	*chmllc(void *ptr);
 void	set_free(void **var, void *new);
@@ -69,7 +69,7 @@ void	free_arr(char **arr);
 void change_shell_lvl(t_minish *minish);
 
 // util/errors.c
-int		cmd_not_found(char *cmd, char *str);
+int		cmd_not_found(char *cmd, char *str, char *str2);
 int		error_builtin(char *str);
 int		command_exit(char *cmd, char *str, int exit_code);
 void	perror_exit_bash(char *str);
@@ -114,4 +114,8 @@ int		ft_env_key_len(char *env);
 
 // parser/read_env
 int		get_envi(char **env, const char *key);
+void	main_signals(void);
+void	ctrl_ign(void);
+void	signal_pipes_cmd(void);
+
 #endif

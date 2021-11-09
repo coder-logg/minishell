@@ -13,6 +13,8 @@ static int	help(t_minish *minish)
 */
 int distribution(t_minish *minish, char **cmd, bool flag_is_pipe)
 {
+	(void)flag_is_pipe;
+	(void)minish;
 	if (flag_is_pipe == false && minish->cmdlst->next)
 		return (help(minish));
 	if (!ft_strcmp(cmd[0], "pwd") || !ft_strcmp(cmd[0], "PWD"))
@@ -27,7 +29,8 @@ int distribution(t_minish *minish, char **cmd, bool flag_is_pipe)
 		g_status = ft_export(cmd, minish->env, minish);
 	else if (!ft_strcmp(cmd[0], "unset"))
 		g_status = unset(cmd, minish->env, minish);
-	else if (!ft_strcmp(cmd[0], "exit"))
+	else
+		if (!ft_strcmp(cmd[0], "exit"))
 		g_status = ft_exit(cmd);
 	else
 	{

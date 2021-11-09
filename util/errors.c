@@ -18,13 +18,19 @@ int error_builtin(char *str)
 **	@brief			display error with "bash: " from str in 2 fd
 **	@param	cmd		command
 **	@param	str		display error
+**	@param	str2	display error2, may be NULL
 */
-int cmd_not_found(char *cmd, char *str)
+int cmd_not_found(char *cmd, char *str, char *str2)
 {
 	write(2, "msh: ", 5);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
 	write(2, str, ft_strlen(str));
+	if (str2 != NULL)
+	{
+		write(2, ": ", 2);
+		write(2, str2, ft_strlen(str2));
+	}
 	write(2, "\n", 1);
 	return (-1);
 }

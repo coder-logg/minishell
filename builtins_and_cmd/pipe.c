@@ -6,7 +6,7 @@
 /*   By: cvenkman <cvenkman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 20:18:52 by cvenkman          #+#    #+#             */
-/*   Updated: 2021/11/04 05:54:06 by cvenkman         ###   ########.fr       */
+/*   Updated: 2021/11/09 23:38:38 by cvenkman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ static void wait_all_process(t_list	*head)
 		else
 		{
 			waitpid(((t_cmd *)head->content)->pid, &g_status, 0);
-			g_status = WEXITSTATUS(g_status);
+			if (g_status == 2)
+				g_status = 130;
+			else
+				g_status = WEXITSTATUS(g_status);
 		}
 		head = head->next;
 	}
@@ -114,11 +117,10 @@ void	ft_pipes(t_minish *minish, char **env)
 	t_list	*elem;
 	t_list	*head;
 
+	// signal_non_interactive();
+	signal_pipes_cmd();
 	elem = minish->cmdlst;
 	head = elem;
- // printf("!! %s   %d   %d\n", ((t_cmd *)minish->cmdlst->content)->cmd, ((t_cmd *)minish->cmdlst->content)->rd_fds[0],
- //   ((t_cmd *)minish->cmdlst->content)->rd_fds[1]);
- // change_fd_if_redirect(((t_cmd *)minish->cmdlst->content)->rd_fds);
 	((t_cmd *)elem->content)->fd_out = STDOUT_FILENO;
 	((t_cmd *)elem->content)->fd_in = STDIN_FILENO;
 	if (((t_cmd *)elem->content)->rd_fds[0] != -1)
